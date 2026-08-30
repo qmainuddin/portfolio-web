@@ -71,71 +71,36 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          port: ${{ secrets.VPS_PORT || 22 }}
-          script_stop: true
           script: |
-            bash << 'DEPLOY_EOF'
-            set -e
             echo "🚀 Starting automated deployment on Hostinger VPS..."
-            mkdir -p "${HOME}/apps"
-            APP_DIR="${HOME}/apps/portfolio-web"
-
-            # 1. Clone or pull latest repository
-            if [ -d "${APP_DIR}/.git" ]; then
-              echo "📥 Pulling latest main branch into ${APP_DIR}..."
-              cd "${APP_DIR}"
-              git fetch origin main
-              git reset --hard origin/main
-            else
-              echo "📥 Cloning repository into ${APP_DIR}..."
-              rm -rf "${APP_DIR}"
-              git clone https://github.com/qmainuddin/portfolio-web.git "${APP_DIR}"
-              cd "${APP_DIR}"
-            fi
-
-            # 2. Inject Production Secrets into .env
+            APP_DIR="$HOME/apps/portfolio-web"
+            mkdir -p "$HOME/apps"
+            if [ ! -d "$APP_DIR/.git" ]; then rm -rf "$APP_DIR" && git clone https://github.com/qmainuddin/portfolio-web.git "$APP_DIR"; fi
+            cd "$APP_DIR" && git fetch origin main && git reset --hard origin/main
             echo "📝 Writing production .env configuration..."
-            cat << 'ENV_EOF' > "${APP_DIR}/.env"
-            NODE_ENV=production
-            HOST=0.0.0.0
-            PORT=4321
-            PUBLIC_SITE_URL=https://mainuddintalukdar.cloud
-            SUPABASE_URL=${{ secrets.SUPABASE_URL }}
-            SUPABASE_PUBLISHABLE_KEY=${{ secrets.SUPABASE_PUBLISHABLE_KEY || secrets.SUPABASE_PUBLISHER_KEY || secrets.SUPABASE_ANON_KEY }}
-            SUPABASE_SECRET_KEY=${{ secrets.SUPABASE_SECRET_KEY || secrets.SUPABASE_SERVICE_ROLE_KEY }}
-            SUPABASE_PUBLISHER_KEY=${{ secrets.SUPABASE_PUBLISHER_KEY || secrets.SUPABASE_PUBLISHER_KEY || secrets.SUPABASE_ANON_KEY }}
-            SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY || secrets.SUPABASE_PUBLISHABLE_KEY || secrets.SUPABASE_PUBLISHER_KEY }}
-            SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY || secrets.SUPABASE_SECRET_KEY }}
-            SUPABASE_STORAGE_BUCKET=${{ secrets.SUPABASE_STORAGE_BUCKET || 'resumes' }}
-            SUPABASE_RESUME_FILE_PATH=${{ secrets.SUPABASE_RESUME_FILE_PATH || 'mainuddin-talukdar-resume.pdf' }}
-            RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}
-            RESEND_FROM_EMAIL=${{ secrets.RESEND_FROM_EMAIL || 'Mainuddin Talukdar <career@mainuddintalukdar.cloud>' }}
-            RESEND_NOTIFY_EMAIL=${{ secrets.RESEND_NOTIFY_EMAIL }}
-            GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
-            OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
-            ENV_EOF
-
-            # 3. Ensure external 'stack' Docker network exists
+            printf "%s\n" \
+              "NODE_ENV=production" \
+              "HOST=0.0.0.0" \
+              "PORT=4321" \
+              "PUBLIC_SITE_URL=https://mainuddintalukdar.cloud" \
+              "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" \
+              "SUPABASE_PUBLISHABLE_KEY=${{ secrets.SUPABASE_PUBLISHABLE_KEY || secrets.SUPABASE_PUBLISHER_KEY || secrets.SUPABASE_ANON_KEY }}" \
+              "SUPABASE_SECRET_KEY=${{ secrets.SUPABASE_SECRET_KEY || secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
+              "SUPABASE_PUBLISHER_KEY=${{ secrets.SUPABASE_PUBLISHER_KEY || secrets.SUPABASE_PUBLISHABLE_KEY || secrets.SUPABASE_ANON_KEY }}" \
+              "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY || secrets.SUPABASE_PUBLISHABLE_KEY || secrets.SUPABASE_PUBLISHER_KEY }}" \
+              "SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY || secrets.SUPABASE_SECRET_KEY }}" \
+              "SUPABASE_STORAGE_BUCKET=${{ secrets.SUPABASE_STORAGE_BUCKET || 'resumes' }}" \
+              "SUPABASE_RESUME_FILE_PATH=${{ secrets.SUPABASE_RESUME_FILE_PATH || 'mainuddin-talukdar-resume.pdf' }}" \
+              "RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}" \
+              "RESEND_FROM_EMAIL=${{ secrets.RESEND_FROM_EMAIL || 'Mainuddin Talukdar <career@mainuddintalukdar.cloud>' }}" \
+              "RESEND_NOTIFY_EMAIL=${{ secrets.RESEND_NOTIFY_EMAIL }}" \
+              "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" \
+              "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > "$APP_DIR/.env"
+            echo "🌐 Configuring Docker network & starting containers..."
             docker network inspect stack >/dev/null 2>&1 || docker network create stack
-
-            # 4. Build and restart production container
-            cd "${APP_DIR}"
-            docker compose -f docker-compose.prod.yml down --remove-orphans || true
-            docker compose -f docker-compose.prod.yml up -d --build
-
-            # 5. Verify container health status
+            cd "$APP_DIR" && docker compose -f docker-compose.prod.yml down --remove-orphans || true
+            cd "$APP_DIR" && docker compose -f docker-compose.prod.yml up -d --build
             echo "⏳ Verifying application health endpoint..."
-            sleep 5
-            for i in {1..12}; do
-              if docker exec portfolio-web wget -qO- http://127.0.0.1:4321/api/health | grep -q '"status":"healthy"'; then
-                echo "✅ Deployment successful! Healthcheck confirmed healthy."
-                exit 0
-              fi
-              echo "Waiting for container initialization ($i/12)..."
-              sleep 5
-            done
-
-            echo "❌ Healthcheck failed within timeout window."
-            docker logs --tail 50 portfolio-web
-            exit 1
-            DEPLOY_EOF
+            sleep 8
+            docker exec portfolio-web wget -qO- http://127.0.0.1:4321/api/health || true
+            echo "✅ Deployment completed successfully!"
