@@ -44,7 +44,7 @@ jobs:
   deploy:
     name: Deploy to Hostinger VPS
     needs: [lint-and-test]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && secrets.VPS_HOST != ''
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -52,7 +52,20 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Check VPS Secrets Configuration
+        id: check_secrets
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+        run: |
+          if [ -z "$VPS_HOST" ]; then
+            echo "has_vps=false" >> $GITHUB_OUTPUT
+            echo "::notice title=Deployment Skipped::VPS_HOST secret is not configured in GitHub repository settings. Set VPS_HOST, VPS_USERNAME, and VPS_SSH_KEY to enable automatic Hostinger VPS deployments."
+          else
+            echo "has_vps=true" >> $GITHUB_OUTPUT
+          fi
+
       - name: Setup SSH Key & Deploy to Hostinger VPS
+        if: steps.check_secrets.outputs.has_vps == 'true'
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
