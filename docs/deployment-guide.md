@@ -78,10 +78,10 @@ Navigate to your GitHub Repository **Settings** &rarr; **Secrets and variables**
 | `VPS_HOST` | IPv4 address of your Hostinger VPS | `194.163.xxx.xxx` |
 | `VPS_USERNAME` | SSH username on VPS | `root` or `deployer` |
 | `VPS_SSH_KEY` | Private OpenSSH Key (`id_ed25519` or `id_rsa`) | `-----BEGIN OPENSSH PRIVATE KEY-----...` |
-| `VPS_PORT` | SSH Port (default: 22) | `22` |
 | `SUPABASE_URL` | Supabase Project URL | `https://your-project-id.supabase.co` |
-| `SUPABASE_ANON_KEY` | Supabase Anonymous Client Key | `eyJhbGciOi...` |
-| `SUPABASE_SERVICE_ROLE_KEY` | Supabase Admin Service Key | `eyJhbGciOi...` |
+| `SUPABASE_PUBLISHABLE_KEY` | Modern Supabase Publishable / Publisher Key | `sb_publishable_...` |
+| `SUPABASE_SECRET_KEY` | Modern Supabase Secret Key (Server-Side) | `sb_secret_...` |
+| `SUPABASE_SERVICE_ROLE_KEY` | (Legacy Fallback) Supabase Service Role Key | `eyJhbGciOi...` |
 | `RESEND_API_KEY` | Resend Production API Key | `re_abc123...` |
 | `RESEND_FROM_EMAIL` | Verified Sender Email | `Mainuddin Talukdar <career@mainuddintalukdar.cloud>` |
 | `GEMINI_API_KEY` | Google Gemini API Key | `AIzaSy...` |

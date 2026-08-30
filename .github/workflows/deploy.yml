@@ -98,8 +98,11 @@ jobs:
             PORT=4321
             PUBLIC_SITE_URL=https://mainuddintalukdar.cloud
             SUPABASE_URL=${{ secrets.SUPABASE_URL }}
-            SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
-            SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+            SUPABASE_PUBLISHABLE_KEY=${{ secrets.SUPABASE_PUBLISHABLE_KEY || secrets.SUPABASE_PUBLISHER_KEY || secrets.SUPABASE_ANON_KEY }}
+            SUPABASE_SECRET_KEY=${{ secrets.SUPABASE_SECRET_KEY || secrets.SUPABASE_SERVICE_ROLE_KEY }}
+            SUPABASE_PUBLISHER_KEY=${{ secrets.SUPABASE_PUBLISHER_KEY || secrets.SUPABASE_PUBLISHABLE_KEY || secrets.SUPABASE_ANON_KEY }}
+            SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY || secrets.SUPABASE_PUBLISHABLE_KEY || secrets.SUPABASE_PUBLISHER_KEY }}
+            SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY || secrets.SUPABASE_SECRET_KEY }}
             SUPABASE_STORAGE_BUCKET=${{ secrets.SUPABASE_STORAGE_BUCKET || 'resumes' }}
             SUPABASE_RESUME_FILE_PATH=${{ secrets.SUPABASE_RESUME_FILE_PATH || 'mainuddin-talukdar-resume.pdf' }}
             RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}

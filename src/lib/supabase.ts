@@ -23,7 +23,14 @@ let supabaseClientInstance: SupabaseClient | null = null;
 
 export function getSupabaseClient(): SupabaseClient | null {
   const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+  // Modern Supabase keys: SUPABASE_SECRET_KEY (Secret API Key), SUPABASE_PUBLISHABLE_KEY / SUPABASE_PUBLISHER_KEY (Publishable API Key)
+  // Backwards-compatible legacy fallbacks: SUPABASE_SERVICE_ROLE_KEY / SUPABASE_ANON_KEY
+  const supabaseKey =
+    process.env.SUPABASE_SECRET_KEY ||
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.SUPABASE_PUBLISHABLE_KEY ||
+    process.env.SUPABASE_PUBLISHER_KEY ||
+    process.env.SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseKey || supabaseUrl.includes('your-project-id')) {
     return null;
@@ -118,6 +125,14 @@ export async function getResumePdfBuffer(): Promise<{ buffer: Buffer; filename: 
   }
 
   // Local fallback resume
+  const localOfficialPath = path.resolve(process.cwd(), 'public/assets/Mainuddin_Talukdar_Resume.pdf');
+  if (fs.existsSync(localOfficialPath)) {
+    return {
+      buffer: fs.readFileSync(localOfficialPath),
+      filename: 'Mainuddin-Talukdar-Resume.pdf',
+    };
+  }
+
   const localSamplePath = path.resolve(process.cwd(), 'public/assets/resume-sample.pdf');
   if (fs.existsSync(localSamplePath)) {
     return {
