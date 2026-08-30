@@ -95,7 +95,7 @@ You can also deploy or test manually directly on the VPS or your workstation:
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/your-username/portfolio-web.git
+git clone https://github.com/qmainuddin/portfolio-web.git
 cd portfolio-web
 
 # 2. Configure .env

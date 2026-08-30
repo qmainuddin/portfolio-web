@@ -40,35 +40,35 @@ export default function AppsPreviewModal() {
   const appData = {
     tradiepulse: {
       name: 'TradiePulse',
-      tagline: 'All-in-One Operations & Job Management Platform for Trade Businesses',
-      status: 'Live Beta / Enterprise Pilot',
+      tagline: 'Conversational AI Agent for Plain-Language Trade Triage & Proximity Matching',
+      status: 'Live on Subdomain / Beta',
       description:
-        'TradiePulse empowers trade professionals (plumbers, electricians, builders) with real-time job dispatching, instant quotes, automated client SMS updates, and inventory tracking. Built for low latency and high offline resilience in the field.',
+        'A conversational AI agent that lets customers describe household problems in plain language. The agent interprets the request, finds the nearest available and qualified tradesperson (plumber, electrician, mechanic), and connects the two.',
       features: [
-        'Real-time job scheduling & dispatch map',
-        'Instant quoting & invoice generation',
-        'Automated SMS notifications for client arrival',
-        'Offline-first mobile sync architecture',
+        'Natural language problem understanding & qualification',
+        'Real-time proximity tradie matching & job routing',
+        'Supabase trade profile & availability management',
+        'Dockerized service behind Caddy reverse proxy',
       ],
-      techStack: ['React Native', 'TypeScript', 'Node.js', 'PostgreSQL', 'Tailwind', 'AWS S3'],
-      metrics: 'Over 40% reduction in admin overhead during pilot trials.',
-      link: 'https://tradiepulse.cloud',
+      techStack: ['Next.js', 'Python Agent', 'Supabase', 'PostgreSQL', 'Docker', 'Caddy', 'Tailwind'],
+      metrics: 'Automated dispatch flow with sub-200ms intent matching.',
+      link: 'https://tradiepulse.mainuddintalukdar.cloud',
     },
     mathquest: {
       name: 'MathQuest',
-      tagline: 'Gamified Adaptive Mathematics Learning Engine for Students',
-      status: 'Production / Active Rollout',
+      tagline: 'Interactive Adaptive Mathematics Learning App for Primary-School Children',
+      status: 'Live on Subdomain / Demo',
       description:
-        'MathQuest turns foundational mathematics education into an engaging role-playing quest. An adaptive difficulty engine personalizes problem sets to each student’s mastery level, diagnosing learning gaps in real-time.',
+        'An interactive maths learning app built on Next.js, Supabase, and Vercel. Children work through puzzle lessons while the app tracks time per question, attempts, and accuracy, calling a Python microservice to score mastery and recommend next exercises.',
       features: [
-        'Adaptive problem difficulty adjustment algorithm',
-        'Gamified quests, badges, and learning streaks',
-        'Educator analytics dashboard with mastery heatmaps',
-        'Accessible multi-device interactive canvas',
+        'Puzzle-based maths lessons for primary students',
+        'Fine-grained engagement tracking (time, attempts, accuracy)',
+        'Python scoring & practice suggestion microservice',
+        'Vercel frontend with Supabase backend telemetry',
       ],
-      techStack: ['Astro', 'React', 'Tailwind CSS', 'Supabase', 'Web Audio API'],
-      metrics: 'Engaged over 1,200 active learners with a 92% completion rate on quest challenges.',
-      link: 'https://mathquest.cloud',
+      techStack: ['Next.js', 'Python Microservice', 'Supabase', 'Vercel', 'Tailwind CSS', 'Web Audio API'],
+      metrics: 'Proving end-to-end adaptive learning workflows ahead of a fully trained model.',
+      link: 'https://mathquest.mainuddintalukdar.cloud',
     },
   };
 
@@ -85,14 +85,14 @@ export default function AppsPreviewModal() {
         onClick={() => setIsOpen(false)}
       />
 
-      <div className="relative w-full max-w-2xl overflow-hidden rounded-2xl border border-slate-700/70 bg-[#0b0f17] text-slate-100 shadow-2xl shadow-indigo-950/50 transition-all animate-slide-up z-10">
+      <div className="relative w-full max-w-2xl overflow-hidden rounded-3xl border border-[#3b5446]/25 dark:border-[#52b788]/30 bg-white dark:bg-[#0e1c15] text-[#12221a] dark:text-[#f0f7f3] shadow-2xl transition-all animate-slide-up z-10">
         {/* Top Gradient */}
-        <div className="h-1.5 w-full bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-500" />
+        <div className="h-1.5 w-full bg-gradient-to-r from-[#1e382b] via-[#52b788] to-[#95d5b2]" />
 
         {/* Close Button */}
         <button
           onClick={() => setIsOpen(false)}
-          className="absolute right-4 top-4 rounded-lg p-1.5 text-slate-400 hover:bg-slate-800 hover:text-white transition"
+          className="absolute right-4 top-4 rounded-full p-2 text-[#60796d] dark:text-[#a3c4b2] hover:bg-[#e6eee8] dark:hover:bg-[#162a20] transition"
           aria-label="Close modal"
         >
           <X className="w-5 h-5" />
@@ -100,52 +100,52 @@ export default function AppsPreviewModal() {
 
         <div className="p-6 sm:p-8">
           {/* App Switcher Tabs */}
-          <div className="flex items-center gap-2 border-b border-slate-800 pb-4 mb-6">
+          <div className="flex items-center gap-2 border-b border-black/5 dark:border-white/5 pb-4 mb-6">
             <button
               onClick={() => setSelectedApp('tradiepulse')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition ${
                 selectedApp === 'tradiepulse'
-                  ? 'bg-indigo-600/20 text-indigo-400 border border-indigo-500/30'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                  ? 'bg-[#1e382b] text-white dark:bg-[#2d6a4f] dark:text-white shadow-sm'
+                  : 'text-[#60796d] dark:text-[#a3c4b2] hover:bg-[#e6eee8] dark:hover:bg-[#162a20]'
               }`}
             >
-              <Smartphone className="w-4 h-4" />
+              <Smartphone className="w-3.5 h-3.5" />
               <span>TradiePulse</span>
             </button>
             <button
               onClick={() => setSelectedApp('mathquest')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition ${
                 selectedApp === 'mathquest'
-                  ? 'bg-indigo-600/20 text-indigo-400 border border-indigo-500/30'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                  ? 'bg-[#1e382b] text-white dark:bg-[#2d6a4f] dark:text-white shadow-sm'
+                  : 'text-[#60796d] dark:text-[#a3c4b2] hover:bg-[#e6eee8] dark:hover:bg-[#162a20]'
               }`}
             >
-              <Sparkles className="w-4 h-4" />
+              <Sparkles className="w-3.5 h-3.5" />
               <span>MathQuest</span>
             </button>
           </div>
 
           {/* App Info Header */}
           <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
-            <h3 className="text-2xl font-bold text-white tracking-tight">{current.name}</h3>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 text-xs font-medium text-emerald-400">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <h3 className="text-2xl font-bold text-[#12221a] dark:text-white tracking-tight">{current.name}</h3>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#2d6a4f]/10 dark:bg-[#52b788]/15 border border-[#2d6a4f]/20 dark:border-[#52b788]/30 px-3 py-1 text-xs font-mono text-[#2d6a4f] dark:text-[#95d5b2]">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#52b788] animate-pulse" />
               {current.status}
             </span>
           </div>
 
-          <p className="text-sm font-medium text-indigo-400 mb-4">{current.tagline}</p>
-          <p className="text-sm text-slate-300 leading-relaxed mb-6">{current.description}</p>
+          <p className="text-sm font-semibold text-[#2d6a4f] dark:text-[#95d5b2] mb-3">{current.tagline}</p>
+          <p className="text-sm text-[#3b5446] dark:text-[#c3d9cc] leading-relaxed mb-6">{current.description}</p>
 
           {/* Features */}
           <div className="mb-6">
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2.5">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-[#60796d] dark:text-[#8aa596] mb-2.5">
               Core Capabilities
             </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               {current.features.map((f, i) => (
-                <div key={i} className="flex items-center gap-2 text-xs text-slate-300">
-                  <span className="h-1.5 w-1.5 rounded-full bg-indigo-400" />
+                <div key={i} className="flex items-center gap-2 text-xs text-[#3b5446] dark:text-[#c3d9cc]">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#52b788]" />
                   <span>{f}</span>
                 </div>
               ))}
@@ -154,14 +154,14 @@ export default function AppsPreviewModal() {
 
           {/* Tech Stack Badges */}
           <div className="mb-6">
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-[#60796d] dark:text-[#8aa596] mb-2">
               Technology Stack
             </h4>
             <div className="flex flex-wrap gap-1.5">
               {current.techStack.map((tech, i) => (
                 <span
                   key={i}
-                  className="rounded-md bg-slate-900 border border-slate-800 px-2.5 py-1 text-xs font-mono text-slate-300"
+                  className="rounded-full bg-[#f4f8f5] dark:bg-[#12241b] border border-[#3b5446]/15 dark:border-[#52b788]/20 px-3 py-1 text-xs font-mono text-[#2d4d3c] dark:text-[#c3d9cc]"
                 >
                   {tech}
                 </span>
@@ -170,8 +170,8 @@ export default function AppsPreviewModal() {
           </div>
 
           {/* Impact Metric & Link */}
-          <div className="rounded-xl border border-indigo-500/20 bg-indigo-950/20 p-4 mb-6">
-            <p className="text-xs text-indigo-300 font-medium">
+          <div className="rounded-2xl border border-[#52b788]/30 bg-[#52b788]/10 p-4 mb-6">
+            <p className="text-xs text-[#1e382b] dark:text-[#d8e8dc] font-medium">
               <strong>Measured Impact:</strong> {current.metrics}
             </p>
           </div>
@@ -179,7 +179,7 @@ export default function AppsPreviewModal() {
           <div className="flex items-center justify-end gap-3 pt-2">
             <button
               onClick={() => setIsOpen(false)}
-              className="rounded-lg border border-slate-800 bg-slate-900 hover:bg-slate-800 px-4 py-2 text-sm text-slate-300 transition"
+              className="rounded-full border border-[#3b5446]/20 dark:border-[#52b788]/30 bg-[#f4f8f5] dark:bg-[#12241b] hover:bg-[#e6eee8] dark:hover:bg-[#162a20] px-4 py-2 text-xs font-bold text-[#12221a] dark:text-white transition"
             >
               Close
             </button>
@@ -187,10 +187,10 @@ export default function AppsPreviewModal() {
               href={current.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-indigo-600/30 transition"
+              className="inline-flex items-center gap-2 rounded-full bg-[#1e382b] hover:bg-[#284a39] dark:bg-[#2d6a4f] dark:hover:bg-[#388261] px-5 py-2 text-xs font-bold text-white shadow-md transition"
             >
-              <span>Explore Application</span>
-              <ExternalLink className="w-4 h-4" />
+              <span>Explore Live Subdomain</span>
+              <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>
         </div>

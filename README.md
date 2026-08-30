@@ -124,7 +124,7 @@ The **Portfolio & Lead Capture Platform** is engineered to deliver sub-second pe
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/username/portfolio-web.git
+   git clone https://github.com/qmainuddin/portfolio-web.git
    cd portfolio-web
    ```
 

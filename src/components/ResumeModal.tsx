@@ -52,7 +52,6 @@ export default function ResumeModal({ isOpenDefault = false }: ResumeModalProps)
   const handleClose = () => {
     if (loading) return;
     setIsOpen(false);
-    // Reset form after close animation
     setTimeout(() => {
       if (resultData) {
         setEmail('');
@@ -117,7 +116,7 @@ export default function ResumeModal({ isOpenDefault = false }: ResumeModalProps)
           setFieldErrors(detailErrors);
         }
       } else {
-        setResultData(data.data || { downloadUrl: '/assets/resume-sample.pdf' });
+        setResultData(data.data || { downloadUrl: '/assets/Mainuddin_Talukdar_Resume.pdf' });
       }
     } catch (err: any) {
       setError(err.message || 'Network error. Please check your connection.');
@@ -142,15 +141,15 @@ export default function ResumeModal({ isOpenDefault = false }: ResumeModalProps)
       />
 
       {/* Modal Card */}
-      <div className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-slate-700/60 bg-[#0b0f17] dark:bg-[#0b0f17] text-slate-100 shadow-2xl shadow-indigo-950/40 transition-all animate-slide-up z-10">
+      <div className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-[#3b5446]/25 dark:border-[#52b788]/30 bg-white dark:bg-[#0e1c15] text-[#12221a] dark:text-[#f0f7f3] shadow-2xl transition-all animate-slide-up z-10">
         {/* Glow Header Accent */}
-        <div className="h-1.5 w-full bg-gradient-to-r from-indigo-500 via-cyan-400 to-emerald-400" />
+        <div className="h-1.5 w-full bg-gradient-to-r from-[#1e382b] via-[#52b788] to-[#95d5b2]" />
 
         {/* Close Button */}
         <button
           onClick={handleClose}
           aria-label="Close dialog"
-          className="absolute right-4 top-4 rounded-lg p-1.5 text-slate-400 hover:bg-slate-800 hover:text-white transition"
+          className="absolute right-4 top-4 rounded-full p-2 text-[#60796d] dark:text-[#a3c4b2] hover:bg-[#e6eee8] dark:hover:bg-[#162a20] transition"
         >
           <X className="w-5 h-5" />
         </button>
@@ -159,22 +158,22 @@ export default function ResumeModal({ isOpenDefault = false }: ResumeModalProps)
           {!resultData ? (
             <>
               <div className="flex items-center gap-2.5 mb-2">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#2d6a4f]/10 text-[#2d6a4f] dark:text-[#95d5b2] border border-[#2d6a4f]/20">
                   <ShieldCheck className="w-4 h-4" />
                 </span>
-                <h3 id="modal-title" className="text-xl font-bold text-white tracking-tight">
+                <h3 id="modal-title" className="text-xl font-bold text-[#12221a] dark:text-white tracking-tight">
                   Request Official Resume
                 </h3>
               </div>
 
-              <p className="text-sm text-slate-400 mb-6">
-                To prevent web scrapers and prioritize human inquiries, please provide your contact details and context.
-                The full PDF resume will be sent directly to your inbox.
+              <p className="text-xs sm:text-sm text-[#60796d] dark:text-[#a3c4b2] mb-6">
+                To prevent web scrapers and prioritize genuine inquiries, please provide your details.
+                The official PDF resume will be sent directly to your inbox.
               </p>
 
               {error && (
-                <div className="mb-5 flex items-start gap-3 rounded-lg border border-red-500/30 bg-red-500/10 p-3.5 text-sm text-red-300">
-                  <AlertCircle className="w-5 h-5 shrink-0 text-red-400 mt-0.5" />
+                <div className="mb-5 flex items-start gap-3 rounded-2xl border border-rose-500/30 bg-rose-500/10 p-3.5 text-xs sm:text-sm text-rose-700 dark:text-rose-300">
+                  <AlertCircle className="w-5 h-5 shrink-0 text-rose-500 mt-0.5" />
                   <p>{error}</p>
                 </div>
               )}
@@ -182,75 +181,75 @@ export default function ResumeModal({ isOpenDefault = false }: ResumeModalProps)
               <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Email Field */}
                 <div>
-                  <label htmlFor="gate-email" className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                    Your Email Address <span className="text-indigo-400">*</span>
+                  <label htmlFor="gate-email" className="block text-xs font-bold uppercase tracking-wider text-[#3b5446] dark:text-[#c3d9cc] mb-1.5">
+                    Your Email Address <span className="text-[#2d6a4f] dark:text-[#52b788]">*</span>
                   </label>
                   <div className="relative">
-                    <Mail className="absolute left-3.5 top-3 w-4 h-4 text-slate-400 pointer-events-none" />
+                    <Mail className="absolute left-3.5 top-3 w-4 h-4 text-[#60796d] dark:text-[#8aa596] pointer-events-none" />
                     <input
                       id="gate-email"
                       type="email"
                       required
-                      placeholder="e.g. alex@company.com"
+                      placeholder="e.g. alex@company.co.nz"
                       value={email}
                       onChange={e => setEmail(e.target.value)}
-                      className={`w-full rounded-lg border bg-slate-900/80 py-2.5 pl-10 pr-3 text-sm text-white placeholder-slate-500 outline-none transition focus:ring-2 focus:ring-indigo-500 ${
-                        fieldErrors.email ? 'border-red-500 ring-1 ring-red-500' : 'border-slate-700/80'
+                      className={`w-full rounded-xl border bg-[#f4f8f5] dark:bg-[#12241b] py-2.5 pl-10 pr-3 text-sm text-[#12221a] dark:text-white placeholder-[#60796d] dark:placeholder-[#6c8a79] outline-none transition focus:ring-2 focus:ring-[#52b788] ${
+                        fieldErrors.email ? 'border-rose-500 ring-1 ring-rose-500' : 'border-[#3b5446]/20 dark:border-[#52b788]/20'
                       }`}
                     />
                   </div>
                   {fieldErrors.email && (
-                    <p className="mt-1 text-xs text-red-400">{fieldErrors.email}</p>
+                    <p className="mt-1 text-xs text-rose-500">{fieldErrors.email}</p>
                   )}
                 </div>
 
                 {/* Phone Field */}
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label htmlFor="gate-phone" className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
+                    <label htmlFor="gate-phone" className="block text-xs font-bold uppercase tracking-wider text-[#3b5446] dark:text-[#c3d9cc]">
                       Phone Number
                     </label>
-                    <span className="text-[11px] text-slate-400">Optional</span>
+                    <span className="text-[11px] text-[#60796d] dark:text-[#8aa596]">Optional</span>
                   </div>
                   <div className="relative">
-                    <Phone className="absolute left-3.5 top-3 w-4 h-4 text-slate-400 pointer-events-none" />
+                    <Phone className="absolute left-3.5 top-3 w-4 h-4 text-[#60796d] dark:text-[#8aa596] pointer-events-none" />
                     <input
                       id="gate-phone"
                       type="tel"
-                      placeholder="e.g. +64 21 000 0000"
+                      placeholder="e.g. +64 22 000 0000"
                       value={phone}
                       onChange={e => setPhone(e.target.value)}
-                      className={`w-full rounded-lg border bg-slate-900/80 py-2.5 pl-10 pr-3 text-sm text-white placeholder-slate-500 outline-none transition focus:ring-2 focus:ring-indigo-500 ${
-                        fieldErrors.phone ? 'border-red-500' : 'border-slate-700/80'
+                      className={`w-full rounded-xl border bg-[#f4f8f5] dark:bg-[#12241b] py-2.5 pl-10 pr-3 text-sm text-[#12221a] dark:text-white placeholder-[#60796d] dark:placeholder-[#6c8a79] outline-none transition focus:ring-2 focus:ring-[#52b788] ${
+                        fieldErrors.phone ? 'border-rose-500' : 'border-[#3b5446]/20 dark:border-[#52b788]/20'
                       }`}
                     />
                   </div>
                   {fieldErrors.phone && (
-                    <p className="mt-1 text-xs text-red-400">{fieldErrors.phone}</p>
+                    <p className="mt-1 text-xs text-rose-500">{fieldErrors.phone}</p>
                   )}
                 </div>
 
                 {/* Intent Reason Field */}
                 <div>
-                  <label htmlFor="gate-intent" className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-                    Why are you requesting my resume? <span className="text-indigo-400">*</span>
+                  <label htmlFor="gate-intent" className="block text-xs font-bold uppercase tracking-wider text-[#3b5446] dark:text-[#c3d9cc] mb-1.5">
+                    Context / Purpose of Inquiry <span className="text-[#2d6a4f] dark:text-[#52b788]">*</span>
                   </label>
                   <div className="relative">
-                    <HelpCircle className="absolute left-3.5 top-3 w-4 h-4 text-slate-400 pointer-events-none" />
+                    <HelpCircle className="absolute left-3.5 top-3 w-4 h-4 text-[#60796d] dark:text-[#8aa596] pointer-events-none" />
                     <textarea
                       id="gate-intent"
                       required
                       rows={3}
-                      placeholder="e.g. Hiring for a Principal AI / Full-Stack Engineer role, or inquiring about architectural consulting..."
+                      placeholder="e.g. Inquiring about full-time AI Engineer role in Christchurch, internship R&D, or architectural consulting..."
                       value={intent}
                       onChange={e => setIntent(e.target.value)}
-                      className={`w-full rounded-lg border bg-slate-900/80 py-2.5 pl-10 pr-3 text-sm text-white placeholder-slate-500 outline-none transition focus:ring-2 focus:ring-indigo-500 ${
-                        fieldErrors.intent ? 'border-red-500 ring-1 ring-red-500' : 'border-slate-700/80'
+                      className={`w-full rounded-xl border bg-[#f4f8f5] dark:bg-[#12241b] py-2.5 pl-10 pr-3 text-sm text-[#12221a] dark:text-white placeholder-[#60796d] dark:placeholder-[#6c8a79] outline-none transition focus:ring-2 focus:ring-[#52b788] ${
+                        fieldErrors.intent ? 'border-rose-500 ring-1 ring-rose-500' : 'border-[#3b5446]/20 dark:border-[#52b788]/20'
                       }`}
                     />
                   </div>
                   {fieldErrors.intent && (
-                    <p className="mt-1 text-xs text-red-400">{fieldErrors.intent}</p>
+                    <p className="mt-1 text-xs text-rose-500">{fieldErrors.intent}</p>
                   )}
                 </div>
 
@@ -258,7 +257,7 @@ export default function ResumeModal({ isOpenDefault = false }: ResumeModalProps)
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/30 transition disabled:opacity-50"
+                    className="w-full flex items-center justify-center gap-2 rounded-full bg-[#1e382b] hover:bg-[#284a39] dark:bg-[#2d6a4f] dark:hover:bg-[#388261] px-4 py-3 text-sm font-bold text-white shadow-md transition disabled:opacity-50"
                   >
                     {loading ? (
                       <>
@@ -268,7 +267,7 @@ export default function ResumeModal({ isOpenDefault = false }: ResumeModalProps)
                     ) : (
                       <>
                         <Mail className="w-4 h-4" />
-                        <span>Send Me The Resume</span>
+                        <span>Send Official Resume</span>
                       </>
                     )}
                   </button>
@@ -278,27 +277,27 @@ export default function ResumeModal({ isOpenDefault = false }: ResumeModalProps)
           ) : (
             /* Success View */
             <div className="text-center py-4">
-              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#52b788]/15 text-[#2d6a4f] dark:text-[#95d5b2] border border-[#52b788]/30">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
 
-              <h3 className="text-2xl font-bold text-white mb-2">Resume Dispatched!</h3>
+              <h3 className="text-2xl font-bold text-[#12221a] dark:text-white mb-2">Resume Dispatched!</h3>
               
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-xs font-mono text-indigo-300 mb-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2d6a4f]/10 dark:bg-[#52b788]/15 border border-[#52b788]/30 text-xs font-mono text-[#2d6a4f] dark:text-[#95d5b2] mb-4 font-semibold">
                 <span>Inquiry Tagged:</span>
-                <strong className="text-indigo-200">{resultData.category || 'Verified Inquiry'}</strong>
+                <strong>{resultData.category || 'Verified Inquiry'}</strong>
               </div>
 
-              <p className="text-sm text-slate-300 mb-6 leading-relaxed">
-                A copy of my official resume has been dispatched to <strong className="text-white">{email}</strong>.
-                You can also download a direct copy immediately using the button below.
+              <p className="text-sm text-[#3b5446] dark:text-[#c3d9cc] mb-6 leading-relaxed">
+                A copy of my official resume has been dispatched to <strong className="text-[#12221a] dark:text-white">{email}</strong>.
+                You can also download a direct copy immediately below.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3">
                 <a
-                  href={resultData.downloadUrl || '/assets/resume-sample.pdf'}
+                  href={resultData.downloadUrl || '/assets/Mainuddin_Talukdar_Resume.pdf'}
                   download="Mainuddin-Talukdar-Resume.pdf"
-                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 px-4 py-2.5 text-sm font-semibold text-white transition shadow-lg shadow-emerald-950/30"
+                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-full bg-[#2d6a4f] hover:bg-[#388261] px-4 py-2.5 text-sm font-bold text-white transition shadow-md"
                 >
                   <Download className="w-4 h-4" />
                   <span>Download PDF Now</span>
@@ -306,7 +305,7 @@ export default function ResumeModal({ isOpenDefault = false }: ResumeModalProps)
                 <button
                   type="button"
                   onClick={handleClose}
-                  className="rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 px-4 py-2.5 text-sm font-medium text-slate-200 transition"
+                  className="rounded-full border border-[#3b5446]/20 dark:border-[#52b788]/30 bg-[#f4f8f5] dark:bg-[#12241b] hover:bg-[#e6eee8] dark:hover:bg-[#162a20] px-4 py-2.5 text-sm font-semibold text-[#12221a] dark:text-white transition"
                 >
                   Done
                 </button>

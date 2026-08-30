@@ -2,36 +2,36 @@
 import { Github, Linkedin, ArrowUp } from 'lucide-react';
 ---
 
-<footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-[#07090e] transition-colors py-12">
+<footer class="border-t border-[#3b5446]/15 dark:border-[#52b788]/15 bg-white/80 dark:bg-[#09130e] transition-colors py-12">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-slate-200 dark:border-slate-800/80">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-black/5 dark:border-white/5">
       {/* Brand */}
       <div class="flex flex-col items-center md:items-start text-center md:text-left">
         <div class="flex items-center gap-2">
-          <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-600 text-white font-mono font-bold text-xs">
+          <span class="flex h-7 w-7 items-center justify-center rounded-xl bg-[#1e382b] dark:bg-[#2d6a4f] text-white font-mono font-bold text-xs">
             MT
           </span>
-          <span class="font-bold text-slate-900 dark:text-white tracking-tight">Mainuddin Talukdar</span>
+          <span class="font-bold text-[#12221a] dark:text-white tracking-tight">Mainuddin Talukdar</span>
         </div>
-        <p class="text-xs text-slate-500 mt-1 max-w-md">
-          Senior Full-Stack Architect & AI Systems Specialist &bull; Building deterministic agentic systems.
+        <p class="text-xs text-[#60796d] dark:text-[#a3c4b2] mt-1 max-w-md">
+          AI Engineer & Full-Stack Architect &bull; Master of AI Student at University of Canterbury, Christchurch, NZ.
         </p>
       </div>
 
       {/* Status Badge & Socials */}
-      <div class="flex flex-wrap items-center gap-4">
-        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[11px] font-mono text-emerald-600 dark:text-emerald-400">
-          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          <span>System Status: 100% Nominal</span>
+      <div class="flex flex-wrap items-center gap-3">
+        <div class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#2d6a4f]/10 dark:bg-[#52b788]/15 border border-[#2d6a4f]/20 dark:border-[#52b788]/30 text-[11px] font-mono text-[#2d6a4f] dark:text-[#95d5b2]">
+          <span class="h-1.5 w-1.5 rounded-full bg-[#52b788] animate-pulse" />
+          <span>Available Full-Time in Christchurch</span>
         </div>
 
         <div class="flex items-center gap-2">
           <a
-            href="https://github.com/mainuddin"
+            href="https://github.com/qmainuddin"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub Profile"
-            class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-indigo-400 hover:border-indigo-500 transition"
+            class="flex h-8 w-8 items-center justify-center rounded-full border border-[#3b5446]/20 dark:border-[#52b788]/30 text-[#3b5446] dark:text-[#a3c4b2] hover:text-[#12221a] dark:hover:text-white hover:bg-[#e6eee8] dark:hover:bg-[#162a20] transition"
           >
             <Github className="w-4 h-4" />
           </a>
@@ -40,7 +40,7 @@ import { Github, Linkedin, ArrowUp } from 'lucide-react';
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn Profile"
-            class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-indigo-400 hover:border-indigo-500 transition"
+            class="flex h-8 w-8 items-center justify-center rounded-full border border-[#3b5446]/20 dark:border-[#52b788]/30 text-[#3b5446] dark:text-[#a3c4b2] hover:text-[#12221a] dark:hover:text-white hover:bg-[#e6eee8] dark:hover:bg-[#162a20] transition"
           >
             <Linkedin className="w-4 h-4" />
           </a>
@@ -49,14 +49,14 @@ import { Github, Linkedin, ArrowUp } from 'lucide-react';
     </div>
 
     {/* Bottom Bar */}
-    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 text-xs text-slate-500 dark:text-slate-500">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 text-xs text-[#60796d] dark:text-[#6c8a79]">
       <p>
-        &copy; {new Date().getFullYear()} Mainuddin Talukdar. All rights reserved. Deployed on Hostinger VPS (`stack` network).
+        &copy; {new Date().getFullYear()} Mainuddin Talukdar. All rights reserved.
       </p>
 
       <a
         href="#hero"
-        class="inline-flex items-center gap-1.5 text-xs text-indigo-500 hover:text-indigo-400 font-medium transition"
+        class="inline-flex items-center gap-1.5 text-xs text-[#2d6a4f] dark:text-[#52b788] hover:underline font-semibold transition"
       >
         <span>Back to Top</span>
         <ArrowUp className="w-3.5 h-3.5" />
@@ -64,3 +64,4 @@ import { Github, Linkedin, ArrowUp } from 'lucide-react';
     </div>
   </div>
 </footer>
+
