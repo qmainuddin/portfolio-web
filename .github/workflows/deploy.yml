@@ -75,23 +75,21 @@ jobs:
           script_stop: true
           script: |
             set -e
-            APP_DIR="/home/${{ secrets.VPS_USERNAME }}/apps/portfolio-web"
+            APP_DIR="${HOME}/apps/portfolio-web"
             echo "🚀 Deploying Portfolio & Lead Capture Platform to ${APP_DIR}..."
 
-            # 1. Ensure directory exists
-            mkdir -p ${APP_DIR}
-
-            # 2. Clone or pull latest repository
+            # 1. Clone or pull latest repository
             if [ -d "${APP_DIR}/.git" ]; then
-              cd ${APP_DIR}
+              cd "${APP_DIR}"
               git fetch origin main
               git reset --hard origin/main
             else
-              git clone ${{ github.server_url }}/${{ github.repository }}.git ${APP_DIR}
-              cd ${APP_DIR}
+              rm -rf "${APP_DIR}"
+              git clone https://github.com/qmainuddin/portfolio-web.git "${APP_DIR}"
+              cd "${APP_DIR}"
             fi
 
-            # 3. Inject Production Secrets into .env
+            # 2. Inject Production Secrets into .env
             cat <<EOF > ${APP_DIR}/.env
             NODE_ENV=production
             HOST=0.0.0.0
