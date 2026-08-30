@@ -74,26 +74,28 @@ jobs:
           port: ${{ secrets.VPS_PORT || 22 }}
           script_stop: true
           script: |
+            bash << 'DEPLOY_EOF'
             set -e
-            set -x
-            echo "1. User & Directory Setup..."
-            whoami
+            echo "🚀 Starting automated deployment on Hostinger VPS..."
             mkdir -p "${HOME}/apps"
             APP_DIR="${HOME}/apps/portfolio-web"
-            echo "2. Fetching repository in ${APP_DIR}..."
 
+            # 1. Clone or pull latest repository
             if [ -d "${APP_DIR}/.git" ]; then
+              echo "📥 Pulling latest main branch into ${APP_DIR}..."
               cd "${APP_DIR}"
               git fetch origin main
               git reset --hard origin/main
             else
+              echo "📥 Cloning repository into ${APP_DIR}..."
               rm -rf "${APP_DIR}"
               git clone https://github.com/qmainuddin/portfolio-web.git "${APP_DIR}"
               cd "${APP_DIR}"
             fi
 
-            echo "3. Writing production .env..."
-            cat <<EOF > ${APP_DIR}/.env
+            # 2. Inject Production Secrets into .env
+            echo "📝 Writing production .env configuration..."
+            cat << 'ENV_EOF' > "${APP_DIR}/.env"
             NODE_ENV=production
             HOST=0.0.0.0
             PORT=4321
@@ -101,7 +103,7 @@ jobs:
             SUPABASE_URL=${{ secrets.SUPABASE_URL }}
             SUPABASE_PUBLISHABLE_KEY=${{ secrets.SUPABASE_PUBLISHABLE_KEY || secrets.SUPABASE_PUBLISHER_KEY || secrets.SUPABASE_ANON_KEY }}
             SUPABASE_SECRET_KEY=${{ secrets.SUPABASE_SECRET_KEY || secrets.SUPABASE_SERVICE_ROLE_KEY }}
-            SUPABASE_PUBLISHER_KEY=${{ secrets.SUPABASE_PUBLISHER_KEY || secrets.SUPABASE_PUBLISHABLE_KEY || secrets.SUPABASE_ANON_KEY }}
+            SUPABASE_PUBLISHER_KEY=${{ secrets.SUPABASE_PUBLISHER_KEY || secrets.SUPABASE_PUBLISHER_KEY || secrets.SUPABASE_ANON_KEY }}
             SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY || secrets.SUPABASE_PUBLISHABLE_KEY || secrets.SUPABASE_PUBLISHER_KEY }}
             SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY || secrets.SUPABASE_SECRET_KEY }}
             SUPABASE_STORAGE_BUCKET=${{ secrets.SUPABASE_STORAGE_BUCKET || 'resumes' }}
@@ -111,16 +113,17 @@ jobs:
             RESEND_NOTIFY_EMAIL=${{ secrets.RESEND_NOTIFY_EMAIL }}
             GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
             OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
-            EOF
+            ENV_EOF
 
-            # 4. Ensure external 'stack' Docker network exists
+            # 3. Ensure external 'stack' Docker network exists
             docker network inspect stack >/dev/null 2>&1 || docker network create stack
 
-            # 5. Build and restart production container
+            # 4. Build and restart production container
+            cd "${APP_DIR}"
             docker compose -f docker-compose.prod.yml down --remove-orphans || true
             docker compose -f docker-compose.prod.yml up -d --build
 
-            # 6. Verify container health status
+            # 5. Verify container health status
             echo "⏳ Verifying application health endpoint..."
             sleep 5
             for i in {1..12}; do
@@ -135,3 +138,4 @@ jobs:
             echo "❌ Healthcheck failed within timeout window."
             docker logs --tail 50 portfolio-web
             exit 1
+            DEPLOY_EOF
