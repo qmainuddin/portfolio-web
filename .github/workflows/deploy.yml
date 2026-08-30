@@ -100,6 +100,9 @@ jobs:
             docker network inspect stack >/dev/null 2>&1 || docker network create stack
             cd "$APP_DIR" && docker compose -f docker-compose.prod.yml down --remove-orphans || true
             cd "$APP_DIR" && docker compose -f docker-compose.prod.yml up -d --build
+            for net in $(docker inspect $(docker ps -q -f name=caddy) --format '{{range $k, $v := .NetworkSettings.Networks}}{{$k}} {{end}}' 2>/dev/null); do
+              docker network connect "$net" portfolio-web 2>/dev/null || true
+            done
             echo "⏳ Verifying application health endpoint..."
             sleep 8
             docker exec portfolio-web wget -qO- http://127.0.0.1:4321/api/health || true
