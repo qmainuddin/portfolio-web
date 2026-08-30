@@ -1,0 +1,18 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Hero from '@/components/Hero.astro';
+import About from '@/components/About.astro';
+import MissionValues from '@/components/MissionValues.astro';
+import SkillsMatrix from '@/components/SkillsMatrix';
+import Experience from '@/components/Experience.astro';
+import Projects from '@/components/Projects.astro';
+---
+
+<Layout>
+  <Hero />
+  <About />
+  <MissionValues />
+  <SkillsMatrix client:visible />
+  <Experience />
+  <Projects />
+</Layout>

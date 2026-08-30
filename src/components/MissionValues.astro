@@ -1,0 +1,118 @@
+---
+import { Users, Scale, Layers, Target } from 'lucide-react';
+---
+
+<section id="values" class="py-20 relative overflow-hidden">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    {/* Section Header */}
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <span class="text-xs font-mono font-bold uppercase tracking-wider text-indigo-500 dark:text-indigo-400">
+        Guiding Principles & Operating System
+      </span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mt-1">
+        Mission & Engineering Decision Matrices
+      </h2>
+      <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400 mt-3">
+        Great software is not defined by complexity, but by the clarity of trade-offs made during its conception.
+      </p>
+    </div>
+
+    {/* Vision Statement Banner */}
+    <div class="relative rounded-2xl border border-indigo-500/30 bg-gradient-to-r from-indigo-950/60 via-[#0e1322] to-indigo-950/60 p-8 sm:p-10 mb-16 text-center shadow-xl shadow-indigo-950/30">
+      <div class="max-w-3xl mx-auto space-y-3">
+        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-mono">
+          <Target className="w-3.5 h-3.5" />
+          <span>Core Vision Statement</span>
+        </span>
+        <blockquote class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-snug">
+          &ldquo;Making the world of Agentic AI usable, maintainable, and extensible.&rdquo;
+        </blockquote>
+        <p class="text-xs sm:text-sm text-slate-400">
+          Transforming unpredictable probabilistic AI experiments into rock-solid, production-grade business assets.
+        </p>
+      </div>
+    </div>
+
+    {/* Values Cards */}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+      {/* Value 1 */}
+      <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60 p-6 sm:p-8 backdrop-blur-sm relative hover:border-indigo-500/40 transition">
+        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 mb-5">
+          <Users className="w-6 h-6" />
+        </div>
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Customer Obsession</h3>
+        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+          Technology serves human outcomes. I measure architectural success not by lines of code or complex jargon, but by end-user delight, operational resilience, and direct business ROI.
+        </p>
+      </div>
+
+      {/* Value 2 */}
+      <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60 p-6 sm:p-8 backdrop-blur-sm relative hover:border-cyan-500/40 transition">
+        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 mb-5">
+          <Layers className="w-6 h-6" />
+        </div>
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Sustainable Architecture</h3>
+        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+          Minimalist dependencies, zero-bloat JavaScript footprints, strict schema boundaries, and deterministic state machines. Systems built to outlive technology hype cycles.
+        </p>
+      </div>
+
+      {/* Value 3 */}
+      <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60 p-6 sm:p-8 backdrop-blur-sm relative hover:border-emerald-500/40 transition">
+        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-5">
+          <Scale className="w-6 h-6" />
+        </div>
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Trade-Off Decision Matrix</h3>
+        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+          Every engineering choice balances Cost, Latency, and Maintainability. I eliminate premature optimization by deploying quantitative telemetry and cost-budget thresholds.
+        </p>
+      </div>
+    </div>
+
+    {/* Decision Matrix Interactive Comparison */}
+    <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0b0f17] overflow-hidden shadow-xl">
+      <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/80 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <Scale className="w-4 h-4 text-indigo-400" />
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">
+            Architectural Trade-Off Matrix
+          </span>
+        </div>
+        <span class="text-[11px] font-mono text-slate-500">Cost vs. Latency vs. Maintainability</span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs sm:text-sm">
+          <thead>
+            <tr class="border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-mono text-[11px] uppercase">
+              <th class="p-4 sm:px-6">Dimension</th>
+              <th class="p-4 sm:px-6 text-red-500 dark:text-red-400">Naive / Hype Pattern</th>
+              <th class="p-4 sm:px-6 text-emerald-600 dark:text-emerald-400 font-bold">Engineered Solution</th>
+              <th class="p-4 sm:px-6">Key Metric Impact</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200 dark:divide-slate-800/60 text-slate-700 dark:text-slate-300">
+            <tr>
+              <td class="p-4 sm:px-6 font-semibold">Agent Context & Memory</td>
+              <td class="p-4 sm:px-6 text-slate-500">Dumping entire repo & history in raw prompts</td>
+              <td class="p-4 sm:px-6 text-slate-900 dark:text-white font-medium">Surgical `.aiignore` + AST context slicing + prompt cache</td>
+              <td class="p-4 sm:px-6 font-mono text-emerald-500">-70% Token Costs</td>
+            </tr>
+            <tr>
+              <td class="p-4 sm:px-6 font-semibold">Web Rendering Model</td>
+              <td class="p-4 sm:px-6 text-slate-500">Heavy SPA with 2MB JavaScript bundle</td>
+              <td class="p-4 sm:px-6 text-slate-900 dark:text-white font-medium">Astro SSR with zero JS default + React Islands</td>
+              <td class="p-4 sm:px-6 font-mono text-emerald-500">&lt; 50ms TTFB / Zero CLS</td>
+            </tr>
+            <tr>
+              <td class="p-4 sm:px-6 font-semibold">Lead Qualification</td>
+              <td class="p-4 sm:px-6 text-slate-500">Exposed mailto links & unauthenticated scraping</td>
+              <td class="p-4 sm:px-6 text-slate-900 dark:text-white font-medium">AI Intent Gate + Supabase RLS + Resend Automation</td>
+              <td class="p-4 sm:px-6 font-mono text-emerald-500">Zero Spam / 100% Verified</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

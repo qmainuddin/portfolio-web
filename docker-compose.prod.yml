@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  portfolio-web:
+    container_name: portfolio-web
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: portfolio-web:latest
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - HOST=0.0.0.0
+      - PORT=4321
+      - PUBLIC_SITE_URL=https://mainuddintalukdar.cloud
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - SUPABASE_STORAGE_BUCKET=${SUPABASE_STORAGE_BUCKET:-resumes}
+      - SUPABASE_RESUME_FILE_PATH=${SUPABASE_RESUME_FILE_PATH:-mainuddin-talukdar-resume.pdf}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - RESEND_FROM_EMAIL=${RESEND_FROM_EMAIL:-Mainuddin Talukdar <career@mainuddintalukdar.cloud>}
+      - RESEND_NOTIFY_EMAIL=${RESEND_NOTIFY_EMAIL}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    networks:
+      - stack
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://127.0.0.1:4321/api/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+networks:
+  stack:
+    external: true

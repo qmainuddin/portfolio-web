@@ -1,0 +1,99 @@
+---
+import { Github, Linkedin, ShieldCheck, FileText, ArrowUpRight } from 'lucide-react';
+---
+
+<section id="about" class="py-20 bg-slate-100/50 dark:bg-slate-900/30 border-y border-slate-200 dark:border-slate-800/80 relative">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      {/* Profile Card & Badges */}
+      <div class="lg:col-span-5 flex flex-col items-center lg:items-start text-center lg:text-left">
+        <div class="relative mb-6">
+          {/* Glowing Ring */}
+          <div class="absolute -inset-1 rounded-3xl bg-gradient-to-tr from-indigo-600 via-cyan-400 to-emerald-400 opacity-60 blur-md transition duration-500 group-hover:opacity-100 animate-pulse-subtle" />
+          
+          <div class="relative h-48 w-48 sm:h-56 sm:w-56 rounded-3xl bg-[#0b0f17] border border-slate-700/80 p-2 shadow-2xl flex flex-col items-center justify-center overflow-hidden">
+            <div class="h-full w-full rounded-2xl bg-gradient-to-b from-indigo-950/70 to-slate-900 flex flex-col items-center justify-center p-4">
+              <span class="text-5xl font-mono font-black text-indigo-400 tracking-tighter">MT</span>
+              <span class="mt-2 text-xs font-semibold uppercase tracking-wider text-slate-400">Mainuddin Talukdar</span>
+              <span class="text-[10px] font-mono text-cyan-400">Auckland, New Zealand</span>
+            </div>
+          </div>
+
+          <span class="absolute -bottom-2 -right-2 flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-500 text-white shadow-lg shadow-emerald-500/30">
+            <ShieldCheck className="w-4 h-4" />
+          </span>
+        </div>
+
+        {/* Social / External Links (No Plaintext Email/Phone) */}
+        <div class="flex items-center gap-3">
+          <a
+            href="https://github.com/mainuddin"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center gap-2 rounded-xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900/90 px-4 py-2.5 text-xs font-semibold text-slate-800 dark:text-slate-200 hover:border-indigo-500 hover:text-indigo-400 transition"
+          >
+            <Github className="w-4 h-4" />
+            <span>GitHub</span>
+            <ArrowUpRight className="w-3 h-3 opacity-60" />
+          </a>
+
+          <a
+            href="https://linkedin.com/in/mainuddintalukdar"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center gap-2 rounded-xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900/90 px-4 py-2.5 text-xs font-semibold text-slate-800 dark:text-slate-200 hover:border-indigo-500 hover:text-indigo-400 transition"
+          >
+            <Linkedin className="w-4 h-4" />
+            <span>LinkedIn</span>
+            <ArrowUpRight className="w-3 h-3 opacity-60" />
+          </a>
+        </div>
+      </div>
+
+      {/* Narrative & Dynamic Gate Box */}
+      <div class="lg:col-span-7 space-y-6">
+        <div>
+          <span class="text-xs font-mono font-bold uppercase tracking-wider text-indigo-500 dark:text-indigo-400">
+            About Me & Engineering Philosophy
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mt-1">
+            Bridging High-Speed Web Ecosystems & Autonomous AI Agents.
+          </h2>
+        </div>
+
+        <p class="text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+          I am a Senior Full-Stack Architect and Systems Specialist with extensive experience taking complex distributed products from conceptual whiteboard diagrams to high-throughput production environments.
+        </p>
+
+        <p class="text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+          My primary focus centers on <strong class="text-slate-900 dark:text-white">deterministic agentic workflows</strong>,
+          <strong class="text-slate-900 dark:text-white"> resilient cloud backends</strong> (Supabase, PostgreSQL, AWS, GCP), and
+          <strong class="text-slate-900 dark:text-white"> zero-bloat web architecture</strong> using Astro and modern TypeScript. I design software systems where latency, observability, and resource budgets are treated as first-class architectural constraints.
+        </p>
+
+        {/* Dynamic Resume Gate Callout */}
+        <div class="rounded-2xl border border-indigo-500/30 bg-gradient-to-r from-indigo-950/40 via-slate-900/60 to-slate-900/40 p-6 backdrop-blur-sm">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <div class="flex items-center gap-2 text-sm font-bold text-white">
+                <FileText className="w-4 h-4 text-indigo-400" />
+                <span>Verified Career Credentials & Full CV</span>
+              </div>
+              <p class="text-xs text-slate-400 mt-1 max-w-md">
+                Direct phone and email contact details are gated behind an automated intent verification system to eliminate scrapers and spam.
+              </p>
+            </div>
+
+            <button
+              onclick="window.dispatchEvent(new CustomEvent('open-resume-modal'))"
+              class="shrink-0 inline-flex items-center gap-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 px-5 py-3 text-xs font-bold text-white shadow-lg shadow-indigo-600/30 transition transform hover:scale-105 active:scale-95"
+            >
+              <span>Unlock Resume PDF</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

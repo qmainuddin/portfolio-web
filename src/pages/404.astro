@@ -1,0 +1,33 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { Home, Terminal } from 'lucide-react';
+---
+
+<Layout title="404 — Page Not Found | Mainuddin Talukdar">
+  <section class="min-h-[70vh] flex items-center justify-center py-20 px-4">
+    <div class="max-w-md mx-auto text-center space-y-6">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 text-red-400 border border-red-500/20 text-xs font-mono">
+        <Terminal className="w-3.5 h-3.5" />
+        <span>HTTP Status: 404 Not Found</span>
+      </div>
+
+      <h1 class="text-6xl sm:text-7xl font-extrabold text-slate-900 dark:text-white font-mono tracking-tighter">
+        404
+      </h1>
+
+      <p class="text-base text-slate-600 dark:text-slate-400 leading-relaxed">
+        The requested route does not exist in this state machine. It may have been relocated, purged, or never declared.
+      </p>
+
+      <div class="pt-4">
+        <a
+          href="/"
+          class="inline-flex items-center gap-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/30 transition"
+        >
+          <Home className="w-4 h-4" />
+          <span>Return to Homepage</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

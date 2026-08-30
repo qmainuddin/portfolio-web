@@ -1,0 +1,214 @@
+---
+import {
+  AlertTriangle,
+  CheckCircle2,
+  ArrowUpRight,
+  Clock,
+} from 'lucide-react';
+
+const featuredProjects = [
+  {
+    id: 'tradiepulse',
+    title: 'TradiePulse Platform',
+    category: 'Operations & Dispatch Engine',
+    status: 'Live Beta / Enterprise Pilot',
+    role: 'Lead Architect & Full-Stack Engineer',
+    architecture: 'Astro SSR + React Native + Supabase PostgreSQL + AWS S3 + Resend Dispatch',
+    impact: 'Reduced trade business administrative overhead by 40% with sub-120ms quoting latency.',
+    description:
+      'A resilient operational platform purpose-built for trade service businesses with offline-first mobile sync, automated client SMS dispatch, and instant invoicing.',
+    techStack: ['Astro', 'React Native', 'Supabase', 'PostgreSQL', 'AWS S3', 'Tailwind CSS'],
+    retrospective: {
+      failure:
+        'Initial iterations utilized high-frequency client polling for real-time dispatch updates, quickly exhausting database connection pools and draining technician mobile batteries in the field.',
+      adaptation:
+        'Re-architected the sync layer to use event-driven Supabase real-time channels combined with an offline-first SQLite write-ahead log (WAL), cutting battery drain by 60% and network payload sizes by 85%.',
+    },
+    liveLink: 'https://tradiepulse.cloud',
+    modalApp: 'tradiepulse',
+  },
+  {
+    id: 'agent-harness',
+    title: 'Deterministic AI Agent Harness',
+    category: 'Autonomous AI Orchestration',
+    status: 'Production Architecture',
+    role: 'AI Systems Specialist & Engineer',
+    architecture: 'TypeScript + AST Parser + Claude Code / Antigravity SDK + Vitest TDD Gates',
+    impact: 'Eliminated context drift and achieved 0% hallucinated file paths across 400+ automated refactor cycles.',
+    description:
+      'An enterprise orchestration harness that transforms non-deterministic LLM tool-calling into observable, cost-bounded state machines with self-healing test verification.',
+    techStack: ['Claude Code', 'Antigravity SDK', 'TypeScript', 'Vitest', 'Zod', 'AST Analysis'],
+    retrospective: {
+      failure:
+        'Unbounded recursive agent prompting caused compounding hallucination loops and runaway token burn whenever tests encountered obscure edge cases.',
+      adaptation:
+        'Enforced a rigid Finite State Machine (FSM) with strict token budget limits, surgical AST context slicing, and mandatory unit test assertion gates before code persistence.',
+    },
+    liveLink: '#',
+  },
+  {
+    id: 'mathquest',
+    title: 'MathQuest Adaptive Engine',
+    category: 'Gamified Learning & Canvas',
+    status: 'Active Rollout',
+    role: 'Lead Product Designer & Architect',
+    architecture: 'Astro SSR + React Islands + Supabase Realtime + Tailwind CSS + Web Audio API',
+    impact: 'Engaged 1,200+ students with a 92% quest completion rate and instant mastery diagnosis.',
+    description:
+      'An adaptive mathematics education platform featuring dynamic difficulty scaling, interactive visual canvas problems, and educator telemetry dashboards.',
+    techStack: ['Astro', 'React', 'Tailwind CSS', 'Supabase', 'Web Audio API'],
+    retrospective: {
+      failure:
+        'Early client-side state reconciliation caused quiz score discrepancies when students navigated between offline mobile devices and school Chromebooks.',
+      adaptation:
+        'Migrated client state to deterministic idempotent event logs synced via PostgreSQL transactional mutations with conflict-free resolution.',
+    },
+    liveLink: 'https://mathquest.cloud',
+    modalApp: 'mathquest',
+  },
+];
+
+const upcomingProjects = [
+  {
+    title: 'Agentic Cloud Infrastructure Synthesizer',
+    timeline: 'Target: Q4 2026',
+    architecture: 'Rust + WASM + Terraform AST + Multi-Cloud Provider Graph',
+    summary:
+      'Autonomous infrastructure orchestrator that translates high-level service SLAs into verifiable, least-privilege Terraform and Kubernetes manifests with cost-limit proofs.',
+  },
+  {
+    title: 'Decentralized Event Mesh Gateway',
+    timeline: 'Target: Q1 2027',
+    architecture: 'Go / Node.js + Caddy Extension + Edge Compute + Redis Pub/Sub',
+    summary:
+      'Ultra-low-latency reverse proxy middleware capable of distributed rate-limiting, intelligent WebSocket multiplexing, and cryptographic token verification at the network edge.',
+  },
+];
+---
+
+<section id="projects" class="py-20 bg-slate-100/50 dark:bg-slate-900/30 border-y border-slate-200 dark:border-slate-800">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    {/* Section Header */}
+    <div class="max-w-3xl mx-auto text-center mb-16">
+      <span class="text-xs font-mono font-bold uppercase tracking-wider text-indigo-500 dark:text-indigo-400">
+        System Case Studies & Engineering Depth
+      </span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mt-1">
+        Featured Projects & Failure Retrospectives
+      </h2>
+      <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">
+        Transparent architectural deep-dives showcasing system design, responsibility, measured impact, and lessons learned through failure and adaptation.
+      </p>
+    </div>
+
+    {/* Featured Projects Grid */}
+    <div class="space-y-12 mb-16">
+      {featuredProjects.map((project) => (
+        <article class="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-[#0b0f17] overflow-hidden shadow-lg hover:border-indigo-500/40 transition">
+          <div class="p-6 sm:p-10 space-y-6">
+            {/* Top Bar */}
+            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-4">
+              <div class="flex items-center gap-2">
+                <span class="text-[11px] font-mono uppercase tracking-wider font-semibold text-indigo-500 dark:text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full">
+                  {project.category}
+                </span>
+                <span class="inline-flex items-center gap-1.5 text-xs text-emerald-500 dark:text-emerald-400 font-mono">
+                  <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  {project.status}
+                </span>
+              </div>
+
+              {project.modalApp && (
+                <button
+                  onclick={`window.dispatchEvent(new CustomEvent('open-apps-modal', { detail: { app: '${project.modalApp}' } }))`}
+                  class="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-500 dark:text-indigo-400 hover:underline"
+                >
+                  <span>Quick App Preview</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+
+            {/* Title & Description */}
+            <div>
+              <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                {project.title}
+              </h3>
+              <p class="text-xs font-mono text-indigo-400 mt-1">
+                <strong>Role:</strong> {project.role} &bull; <strong>Architecture:</strong> {project.architecture}
+              </p>
+              <p class="text-sm text-slate-600 dark:text-slate-300 mt-3 leading-relaxed">
+                {project.description}
+              </p>
+            </div>
+
+            {/* Impact Metric Banner */}
+            <div class="rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-4 text-xs sm:text-sm text-emerald-600 dark:text-emerald-300 font-medium flex items-start gap-2.5">
+              <CheckCircle2 className="w-5 h-5 shrink-0 text-emerald-400 mt-0.5" />
+              <span><strong>Concrete Impact:</strong> {project.impact}</span>
+            </div>
+
+            {/* Failure & Adaptation Retrospective Card */}
+            <div class="rounded-2xl border border-amber-500/25 bg-amber-500/5 dark:bg-[#14120f] p-5 sm:p-6 space-y-3">
+              <div class="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-amber-500 dark:text-amber-400">
+                <AlertTriangle className="w-4 h-4" />
+                <span>Failure & Adaptation Retrospective</span>
+              </div>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs leading-relaxed">
+                <div class="space-y-1">
+                  <span class="font-bold text-red-500 dark:text-red-400">Initial Failure / Bottleneck:</span>
+                  <p class="text-slate-600 dark:text-slate-400">{project.retrospective.failure}</p>
+                </div>
+                <div class="space-y-1">
+                  <span class="font-bold text-emerald-600 dark:text-emerald-400">Engineered Adaptation:</span>
+                  <p class="text-slate-600 dark:text-slate-300">{project.retrospective.adaptation}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Tech Badges */}
+            <div class="flex flex-wrap gap-2 pt-2">
+              {project.techStack.map((tech) => (
+                <span class="rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 px-2.5 py-1 text-xs font-mono text-slate-700 dark:text-slate-300">
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    {/* Structured Upcoming Project Placeholders */}
+    <div class="mt-16">
+      <div class="flex items-center gap-2 mb-6">
+        <Clock className="w-5 h-5 text-indigo-400" />
+        <h3 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight">
+          Pipeline & Upcoming Architectural Labs
+        </h3>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {upcomingProjects.map((item) => (
+          <div class="rounded-2xl border border-dashed border-slate-300 dark:border-slate-800 bg-white/50 dark:bg-slate-900/30 p-6 space-y-3">
+            <div class="flex items-center justify-between gap-2">
+              <h4 class="text-base font-bold text-slate-900 dark:text-white">
+                {item.title}
+              </h4>
+              <span class="text-xs font-mono text-indigo-400 bg-indigo-500/10 px-2.5 py-0.5 rounded-full">
+                {item.timeline}
+              </span>
+            </div>
+            <p class="text-xs font-mono text-slate-500">
+              <strong>Target Stack:</strong> {item.architecture}
+            </p>
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+              {item.summary}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

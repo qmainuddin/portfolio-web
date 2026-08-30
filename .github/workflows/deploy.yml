@@ -1,0 +1,120 @@
+name: Production CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: production-deployment
+  cancel-in-progress: false
+
+jobs:
+  # ----------------------------------------------------------------------------
+  # Stage 1: Quality Assurance (Lint & Test)
+  # ----------------------------------------------------------------------------
+  lint-and-test:
+    name: Lint & Automated Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Typecheck & Linter
+        run: npm run lint
+
+      - name: Run Automated Vitest Test Suite
+        run: npm run test
+
+  # ----------------------------------------------------------------------------
+  # Stage 2: Production Build & Remote VPS Deployment
+  # ----------------------------------------------------------------------------
+  deploy:
+    name: Deploy to Hostinger VPS
+    needs: [lint-and-test]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH Key & Deploy to Hostinger VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          script_stop: true
+          script: |
+            set -e
+            APP_DIR="/home/${{ secrets.VPS_USERNAME }}/apps/portfolio-web"
+            echo "🚀 Deploying Portfolio & Lead Capture Platform to ${APP_DIR}..."
+
+            # 1. Ensure directory exists
+            mkdir -p ${APP_DIR}
+
+            # 2. Clone or pull latest repository
+            if [ -d "${APP_DIR}/.git" ]; then
+              cd ${APP_DIR}
+              git fetch origin main
+              git reset --hard origin/main
+            else
+              git clone ${{ github.server_url }}/${{ github.repository }}.git ${APP_DIR}
+              cd ${APP_DIR}
+            fi
+
+            # 3. Inject Production Secrets into .env
+            cat <<EOF > ${APP_DIR}/.env
+            NODE_ENV=production
+            HOST=0.0.0.0
+            PORT=4321
+            PUBLIC_SITE_URL=https://mainuddintalukdar.cloud
+            SUPABASE_URL=${{ secrets.SUPABASE_URL }}
+            SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
+            SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+            SUPABASE_STORAGE_BUCKET=${{ secrets.SUPABASE_STORAGE_BUCKET || 'resumes' }}
+            SUPABASE_RESUME_FILE_PATH=${{ secrets.SUPABASE_RESUME_FILE_PATH || 'mainuddin-talukdar-resume.pdf' }}
+            RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}
+            RESEND_FROM_EMAIL=${{ secrets.RESEND_FROM_EMAIL || 'Mainuddin Talukdar <career@mainuddintalukdar.cloud>' }}
+            RESEND_NOTIFY_EMAIL=${{ secrets.RESEND_NOTIFY_EMAIL }}
+            GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
+            OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+            EOF
+
+            # 4. Ensure external 'stack' Docker network exists
+            docker network inspect stack >/dev/null 2>&1 || docker network create stack
+
+            # 5. Build and restart production container
+            docker compose -f docker-compose.prod.yml down --remove-orphans || true
+            docker compose -f docker-compose.prod.yml up -d --build
+
+            # 6. Verify container health status
+            echo "⏳ Verifying application health endpoint..."
+            sleep 5
+            for i in {1..12}; do
+              if docker exec portfolio-web wget -qO- http://127.0.0.1:4321/api/health | grep -q '"status":"healthy"'; then
+                echo "✅ Deployment successful! Healthcheck confirmed healthy."
+                exit 0
+              fi
+              echo "Waiting for container initialization ($i/12)..."
+              sleep 5
+            done
+
+            echo "❌ Healthcheck failed within timeout window."
+            docker logs --tail 50 portfolio-web
+            exit 1

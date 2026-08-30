@@ -1,0 +1,41 @@
+# ==============================================================================
+# Host Caddy Reverse Proxy Snippet for mainuddintalukdar.cloud
+# Append this configuration block into your host Caddyfile (on Hostinger VPS)
+# ==============================================================================
+
+mainuddintalukdar.cloud, www.mainuddintalukdar.cloud {
+    # Automatic TLS with Let's Encrypt / ZeroSSL
+    encode zstd gzip
+
+    # Security Headers
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        X-XSS-Protection "1; mode=block"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Permissions-Policy "camera=(), microphone=(), geolocation=()"
+    }
+
+    # Reverse proxy to the portfolio container on the shared 'stack' Docker network
+    reverse_proxy portfolio-web:4321 {
+        health_uri /api/health
+        health_interval 30s
+        health_timeout 5s
+
+        # Preserve client headers
+        header_up Host {host}
+        header_up X-Real-IP {remote_host}
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Proto {scheme}
+    }
+
+    # Logging
+    log {
+        output file /var/log/caddy/portfolio_access.log {
+            roll_size 10MB
+            roll_keep 5
+        }
+        format json
+    }
+}

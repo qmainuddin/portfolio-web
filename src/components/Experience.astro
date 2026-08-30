@@ -1,0 +1,107 @@
+---
+import { Briefcase, TrendingUp } from 'lucide-react';
+
+const experiences = [
+  {
+    role: 'Principal Full-Stack Architect & AI Specialist',
+    company: 'NextGen Solutions & Independent Consultancy',
+    period: '2024 – Present',
+    location: 'Auckland, NZ',
+    impactHighlight: 'Delivered autonomous agentic workflows cutting manual data processing cycles by 78%.',
+    achievements: [
+      'Architected state-machine-driven agent swarms integrating Claude Code and Gemini with AST-aware verification gates.',
+      'Containerized high-concurrency microservices on Hostinger VPS using Docker, Caddy, and Supabase.',
+      'Reduced token expenditure by 65% across enterprise pipelines using context-slicing and semantic caching.',
+    ],
+  },
+  {
+    role: 'Lead Cloud & Systems Engineer',
+    company: 'Enterprise Cloud Systems',
+    period: '2022 – 2024',
+    location: 'Remote',
+    impactHighlight: 'Maintained 99.99% system availability while reducing AWS cloud infrastructure bills by $45,000/year.',
+    achievements: [
+      'Designed event-driven asynchronous message queuing pipelines using AWS SQS, Lambda, and DynamoDB.',
+      'Migrated legacy monolithic frontends to modern Astro and React SSR architectures with sub-100ms TTFB.',
+      'Implemented automated CI/CD security scanning, decreasing post-release regression defect rates to near zero.',
+    ],
+  },
+  {
+    role: 'Senior Full-Stack Engineer',
+    company: 'Digital Core Platforms',
+    period: '2020 – 2022',
+    location: 'Auckland, NZ',
+    impactHighlight: 'Spearheaded real-time collaboration engines serving 50,000+ daily active users.',
+    achievements: [
+      'Engineered scalable PostgreSQL relational schemas with strict Row-Level Security policies and Redis caching.',
+      'Led agile team of 6 engineers with strict Test-Driven Development (TDD) and architectural design reviews.',
+      'Built custom webhook synchronization systems for high-frequency transactional data streams.',
+    ],
+  },
+];
+---
+
+<section id="experience" class="py-20 relative">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl mx-auto text-center mb-16">
+      <span class="text-xs font-mono font-bold uppercase tracking-wider text-indigo-500 dark:text-indigo-400">
+        Career Trajectory & Proven Delivery
+      </span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mt-1">
+        Experience & Quantifiable Impact
+      </h2>
+      <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">
+        A compact overview of leadership roles, architectural milestones, and measured performance metrics.
+      </p>
+    </div>
+
+    {/* Timeline Container */}
+    <div class="max-w-4xl mx-auto space-y-8 relative before:absolute before:inset-0 before:left-5 sm:before:left-1/2 before:w-0.5 before:bg-slate-200 dark:before:bg-slate-800 before:-translate-x-1/2">
+      {experiences.map((exp, index) => (
+        <div class="relative flex flex-col sm:flex-row items-start group">
+          {/* Central Bullet */}
+          <div class="absolute left-5 sm:left-1/2 -translate-x-1/2 mt-1.5 flex h-9 w-9 items-center justify-center rounded-full border-2 border-indigo-500 bg-white dark:bg-[#0b0f17] text-indigo-400 shadow-md shadow-indigo-600/30 z-10">
+            <Briefcase className="w-4 h-4" />
+          </div>
+
+          {/* Content Card */}
+          <div class={`ml-12 sm:ml-0 w-full sm:w-[calc(50%-2.5rem)] ${index % 2 === 0 ? 'sm:mr-auto sm:pr-4 text-left' : 'sm:ml-auto sm:pl-4 text-left'}`}>
+            <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-[#0b0f17] p-6 shadow-sm hover:border-indigo-500/40 transition">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-mono font-semibold text-indigo-500 dark:text-indigo-400">
+                  {exp.period}
+                </span>
+                <span class="text-[11px] font-mono text-slate-400">
+                  {exp.location}
+                </span>
+              </div>
+
+              <h3 class="text-base font-bold text-slate-900 dark:text-white">
+                {exp.role}
+              </h3>
+              <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-3">
+                {exp.company}
+              </p>
+
+              {/* Metric Callout */}
+              <div class="rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-3 mb-4 flex items-start gap-2 text-xs text-emerald-600 dark:text-emerald-300 font-medium">
+                <TrendingUp className="w-4 h-4 shrink-0 text-emerald-400 mt-0.5" />
+                <span><strong>Impact:</strong> {exp.impactHighlight}</span>
+              </div>
+
+              {/* Bullet Points */}
+              <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-400">
+                {exp.achievements.map((ach) => (
+                  <li class="flex items-start gap-2">
+                    <span class="text-indigo-400 font-bold mt-0.5">&bull;</span>
+                    <span>{ach}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
