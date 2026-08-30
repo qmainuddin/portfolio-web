@@ -75,10 +75,13 @@ jobs:
           script_stop: true
           script: |
             set -e
+            set -x
+            echo "1. User & Directory Setup..."
+            whoami
+            mkdir -p "${HOME}/apps"
             APP_DIR="${HOME}/apps/portfolio-web"
-            echo "🚀 Deploying Portfolio & Lead Capture Platform to ${APP_DIR}..."
+            echo "2. Fetching repository in ${APP_DIR}..."
 
-            # 1. Clone or pull latest repository
             if [ -d "${APP_DIR}/.git" ]; then
               cd "${APP_DIR}"
               git fetch origin main
@@ -89,7 +92,7 @@ jobs:
               cd "${APP_DIR}"
             fi
 
-            # 2. Inject Production Secrets into .env
+            echo "3. Writing production .env..."
             cat <<EOF > ${APP_DIR}/.env
             NODE_ENV=production
             HOST=0.0.0.0
