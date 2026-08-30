@@ -26,6 +26,8 @@ services:
       - RESEND_NOTIFY_EMAIL=${RESEND_NOTIFY_EMAIL}
       - GEMINI_API_KEY=${GEMINI_API_KEY}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
+    ports:
+      - "4321:4321"
     networks:
       - stack
     healthcheck:
