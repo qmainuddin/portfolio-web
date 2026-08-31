@@ -179,8 +179,11 @@ export function generateResumeEmailHtml(intentCategory: string, name?: string): 
       </div>
     </div>
     <div class="footer">
-      <p>&copy; ${new Date().getFullYear()} Mainuddin Talukdar &bull; <a href="https://mainuddintalukdar.cloud">mainuddintalukdar.cloud</a></p>
-      <p>Delivered via the Portfolio & Lead Capture Platform.</p>
+      <p style="margin: 0 0 10px 0; color: #fca5a5; font-size: 12px; line-height: 1.5; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: 6px; padding: 8px 12px;">
+        ⚠️ <strong>Disclaimer:</strong> This is an automated delivery email. Please do not reply directly to this message. For any inquiries or direct communication, please contact Mainuddin directly at <a href="mailto:mainuddin.talukdar.global@gmail.com" style="color: #95d5b2; text-decoration: underline;">mainuddin.talukdar.global@gmail.com</a> or phone <a href="tel:0221218409" style="color: #95d5b2; text-decoration: underline;">0221218409</a>.
+      </p>
+      <p style="margin: 0 0 4px 0;">&copy; ${new Date().getFullYear()} Mainuddin Talukdar &bull; <a href="https://mainuddintalukdar.cloud">mainuddintalukdar.cloud</a></p>
+      <p style="margin: 0;">Delivered via the Portfolio & Lead Capture Platform.</p>
     </div>
   </div>
 </body>
@@ -253,7 +256,7 @@ export async function sendResumeEmail(
       from: fromEmail,
       to: [params.toEmail],
       replyTo: replyTo ? [replyTo] : undefined,
-      subject: `Mainuddin Talukdar — Resume & Technical Overview`,
+      subject: '[Do Not Reply] Mainuddin Talukdar — Resume & Technical Overview',
       html,
       attachments: [
         {

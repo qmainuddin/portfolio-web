@@ -8,7 +8,7 @@ describe('Email Template Generator & Delivery', () => {
     expect(html).toContain('Dear Sarah Jenkins,');
     expect(html).toContain('Mainuddin Talukdar');
     expect(html).toContain('Inquiry Verified: Recruiter');
-    expect(html).toContain('career and engineering');
+    expect(html).toContain('Please do not reply directly to this message');
     expect(html).toContain('0221218409');
     expect(html).toContain('mainuddin.talukdar.global@gmail.com');
     expect(html).toContain('https://www.linkedin.com/in/mainuddintalukdar/');
