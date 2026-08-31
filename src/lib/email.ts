@@ -200,30 +200,159 @@ export function generateAdminNotificationHtml(params: {
   score: number;
   summary: string;
 }): string {
+  const nameDisplay = params.name && params.name.trim() ? params.name.trim() : 'Not provided';
+  const phoneDisplay = params.phone && params.phone.trim() ? params.phone.trim() : null;
+
   return `
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>New Resume Lead Captured</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Lead Captured</title>
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #09130e; color: #f0f7f3; padding: 20px; }
-    .card { max-width: 600px; margin: 0 auto; background: #0e1d16; border: 1px solid rgba(82,183,136,0.3); border-radius: 12px; padding: 24px; }
-    h2 { color: #52b788; margin-top: 0; }
-    .field { margin-bottom: 12px; }
-    .label { font-weight: bold; color: #95d5b2; font-size: 12px; text-transform: uppercase; }
-    .val { background: #13281f; padding: 8px 12px; border-radius: 6px; font-size: 14px; margin-top: 4px; word-break: break-word; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f1f5f9;
+      color: #0f172a;
+      margin: 0;
+      padding: 24px;
+    }
+    .card {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 28px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    .header {
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+    }
+    h2 {
+      color: #1e382b;
+      margin: 0 0 4px 0;
+      font-size: 20px;
+      font-weight: 800;
+    }
+    .subtitle {
+      color: #64748b;
+      font-size: 13px;
+      margin: 0;
+    }
+    .field {
+      margin-bottom: 16px;
+    }
+    .label {
+      font-weight: 700;
+      color: #334155;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .val {
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      color: #0f172a;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 6px;
+      background-color: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+    .actions {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid #e2e8f0;
+    }
+    .btn {
+      display: inline-block;
+      background-color: #1e382b;
+      color: #ffffff !important;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 9px 18px;
+      border-radius: 6px;
+      margin-right: 8px;
+    }
+    .btn-secondary {
+      display: inline-block;
+      background-color: #f1f5f9;
+      color: #0f172a !important;
+      border: 1px solid #cbd5e1;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 9px 18px;
+      border-radius: 6px;
+    }
   </style>
 </head>
 <body>
   <div class="card">
-    <h2>🎯 New Lead Captured on Portfolio</h2>
-    ${params.name ? `<div class="field"><div class="label">Requester Name:</div><div class="val"><strong>${params.name}</strong></div></div>` : ''}
-    <div class="field"><div class="label">Requester Email:</div><div class="val">${params.email}</div></div>
-    ${params.phone ? `<div class="field"><div class="label">Phone:</div><div class="val">${params.phone}</div></div>` : ''}
-    <div class="field"><div class="label">AI Classified Category:</div><div class="val"><strong>${params.category}</strong> (Confidence: ${(params.score * 100).toFixed(0)}%)</div></div>
-    <div class="field"><div class="label">AI Summary:</div><div class="val">${params.summary}</div></div>
-    <div class="field"><div class="label">Raw Intent Message:</div><div class="val">${params.intent}</div></div>
+    <div class="header">
+      <h2>🎯 New Resume Lead Captured</h2>
+      <p class="subtitle">A visitor has requested your resume on <a href="https://mainuddintalukdar.cloud" style="color: #1e382b; font-weight: 600; text-decoration: none;">mainuddintalukdar.cloud</a></p>
+    </div>
+
+    <div class="field">
+      <div class="label">Requester Name</div>
+      <div class="val" style="font-weight: 700; font-size: 15px; color: #0f172a;">${nameDisplay}</div>
+    </div>
+
+    <div class="field">
+      <div class="label">Requester Email</div>
+      <div class="val">
+        <a href="mailto:${params.email}" style="color: #0369a1; text-decoration: none; font-weight: 600;">${params.email}</a>
+      </div>
+    </div>
+
+    ${phoneDisplay ? `
+    <div class="field">
+      <div class="label">Phone Number</div>
+      <div class="val">
+        <a href="tel:${phoneDisplay}" style="color: #0369a1; text-decoration: none; font-weight: 600;">${phoneDisplay}</a>
+      </div>
+    </div>
+    ` : ''}
+
+    <div class="field">
+      <div class="label">AI Classified Category</div>
+      <div class="val">
+        <span class="badge">${params.category}</span>
+        <span style="color: #64748b; font-size: 13px; margin-left: 8px;">(Confidence: ${(params.score * 100).toFixed(0)}%)</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="label">AI Intent Summary</div>
+      <div class="val" style="color: #1e293b;">${params.summary}</div>
+    </div>
+
+    <div class="field">
+      <div class="label">Raw Message Submitted</div>
+      <div class="val" style="background-color: #f1f5f9; border-left: 3px solid #1e382b; font-style: normal; color: #0f172a; white-space: pre-wrap;">${params.intent}</div>
+    </div>
+
+    <div class="actions">
+      <a href="mailto:${params.email}?subject=Re:%20Inquiry%20from%20Mainuddin%20Talukdar%20Portfolio" class="btn">✉️ Reply to ${nameDisplay}</a>
+      ${phoneDisplay ? `<a href="tel:${phoneDisplay}" class="btn-secondary">📞 Call ${phoneDisplay}</a>` : ''}
+    </div>
   </div>
 </body>
 </html>
