@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Phone, HelpCircle, CheckCircle2, AlertCircle, Loader2, X, Download, ShieldCheck } from 'lucide-react';
+import { Mail, Phone, HelpCircle, CheckCircle2, AlertCircle, Loader2, X, Download, ShieldCheck, User } from 'lucide-react';
 
 interface ResumeModalProps {
   isOpenDefault?: boolean;
@@ -7,6 +7,7 @@ interface ResumeModalProps {
 
 export default function ResumeModal({ isOpenDefault = false }: ResumeModalProps) {
   const [isOpen, setIsOpen] = useState(isOpenDefault);
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [intent, setIntent] = useState('');
@@ -54,6 +55,7 @@ export default function ResumeModal({ isOpenDefault = false }: ResumeModalProps)
     setIsOpen(false);
     setTimeout(() => {
       if (resultData) {
+        setName('');
         setEmail('');
         setPhone('');
         setIntent('');
@@ -66,6 +68,12 @@ export default function ResumeModal({ isOpenDefault = false }: ResumeModalProps)
 
   const validate = () => {
     const errs: Record<string, string> = {};
+    if (!name.trim()) {
+      errs.name = 'Please provide your name.';
+    } else if (name.trim().length < 2) {
+      errs.name = 'Name must be at least 2 characters.';
+    }
+
     if (!email.trim()) {
       errs.email = 'Email address is required.';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
@@ -98,6 +106,7 @@ export default function ResumeModal({ isOpenDefault = false }: ResumeModalProps)
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          name: name.trim(),
           email: email.trim(),
           phone: phone.trim() || undefined,
           intent: intent.trim(),
@@ -179,6 +188,30 @@ export default function ResumeModal({ isOpenDefault = false }: ResumeModalProps)
               )}
 
               <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Name Field */}
+                <div>
+                  <label htmlFor="gate-name" className="block text-xs font-bold uppercase tracking-wider text-[#3b5446] dark:text-[#c3d9cc] mb-1.5">
+                    Your Full Name <span className="text-[#2d6a4f] dark:text-[#52b788]">*</span>
+                  </label>
+                  <div className="relative">
+                    <User className="absolute left-3.5 top-3 w-4 h-4 text-[#60796d] dark:text-[#8aa596] pointer-events-none" />
+                    <input
+                      id="gate-name"
+                      type="text"
+                      required
+                      placeholder="e.g. Alex Thompson / Sarah Connor"
+                      value={name}
+                      onChange={e => setName(e.target.value)}
+                      className={`w-full rounded-xl border bg-[#f4f8f5] dark:bg-[#12241b] py-2.5 pl-10 pr-3 text-sm text-[#12221a] dark:text-white placeholder-[#60796d] dark:placeholder-[#6c8a79] outline-none transition focus:ring-2 focus:ring-[#52b788] ${
+                        fieldErrors.name ? 'border-rose-500 ring-1 ring-rose-500' : 'border-[#3b5446]/20 dark:border-[#52b788]/20'
+                      }`}
+                    />
+                  </div>
+                  {fieldErrors.name && (
+                    <p className="mt-1 text-xs text-rose-500">{fieldErrors.name}</p>
+                  )}
+                </div>
+
                 {/* Email Field */}
                 <div>
                   <label htmlFor="gate-email" className="block text-xs font-bold uppercase tracking-wider text-[#3b5446] dark:text-[#c3d9cc] mb-1.5">

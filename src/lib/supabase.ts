@@ -4,6 +4,7 @@ import path from 'node:path';
 
 export interface ResumeRequestRecord {
   id?: string;
+  name?: string | null;
   email: string;
   phone?: string | null;
   intent_raw: string;
@@ -67,30 +68,36 @@ export async function saveResumeRequest(
   }
 
   try {
-    const { data, error } = await client
-      .from('resume_requests')
-      .insert([
-        {
-          email: record.email,
-          phone: record.phone || null,
-          intent_raw: record.intent_raw,
-          intent_category: record.intent_category,
-          intent_score: record.intent_score,
-          intent_summary: record.intent_summary || null,
-          user_agent: record.user_agent || null,
-          ip_hash: record.ip_hash || null,
-          status: record.status || 'sent',
-        },
-      ])
-      .select('id')
-      .single();
+    const payload: Record<string, any> = {
+      email: record.email,
+      phone: record.phone || null,
+      intent_raw: record.intent_raw,
+      intent_category: record.intent_category,
+      intent_score: record.intent_score,
+      intent_summary: record.intent_summary || null,
+      user_agent: record.user_agent || null,
+      ip_hash: record.ip_hash || null,
+      status: record.status || 'sent',
+    };
 
-    if (error) {
-      console.error('[Supabase Error] Failed to insert resume request:', error.message);
-      return { success: false, id: '', error: error.message };
+    if (record.name) {
+      payload.name = record.name;
     }
 
-    return { success: true, id: data?.id || 'saved' };
+    let insertRes = await client.from('resume_requests').insert([payload]).select('id').single();
+
+    // Fallback if column 'name' does not exist in user's Supabase schema yet
+    if (insertRes.error && insertRes.error.message.includes('name')) {
+      delete payload.name;
+      insertRes = await client.from('resume_requests').insert([payload]).select('id').single();
+    }
+
+    if (insertRes.error) {
+      console.error('[Supabase Error] Failed to insert resume request:', insertRes.error.message);
+      return { success: false, id: '', error: insertRes.error.message };
+    }
+
+    return { success: true, id: insertRes.data?.id || 'saved' };
   } catch (err: any) {
     console.error('[Supabase Exception]', err);
     return { success: false, id: '', error: err.message || 'Database error' };

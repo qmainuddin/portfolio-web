@@ -9,6 +9,7 @@ describe('API Integration: POST /api/request-resume', () => {
 
   it('processes a valid resume request and returns 200 with metadata', async () => {
     const payload = {
+      name: 'Jessica Pearson',
       email: 'recruiter@company.com',
       phone: '+64 21 555 1234',
       intent: 'We are hiring a Lead AI Architect for our platform and need to review your credentials.',
@@ -34,6 +35,7 @@ describe('API Integration: POST /api/request-resume', () => {
 
     // Verify record was stored in mock store
     expect(mockResumeRequests.length).toBe(1);
+    expect(mockResumeRequests[0].name).toBe('Jessica Pearson');
     expect(mockResumeRequests[0].email).toBe('recruiter@company.com');
     expect(mockResumeRequests[0].intent_category).toBe('Recruiter');
     expect(mockResumeRequests[0].user_agent).toBe('Vitest-Test-Runner');
@@ -62,6 +64,7 @@ describe('API Integration: POST /api/request-resume', () => {
 
   it('flags spam submissions and marks status as flagged without sending email', async () => {
     const spamPayload = {
+      name: 'Crypto Spammer',
       email: 'spammer@promo.com',
       intent: 'Buy crypto and backlinks at discount prices!',
     };

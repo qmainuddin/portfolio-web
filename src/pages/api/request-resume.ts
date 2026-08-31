@@ -8,6 +8,11 @@ import { sendResumeEmail, sendLeadNotificationEmail } from '@/lib/email';
 export const prerender = false;
 
 export const resumeRequestSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(2, 'Please provide your name (minimum 2 characters)')
+    .max(100, 'Name must be under 100 characters'),
   email: z
     .string()
     .trim()
@@ -38,6 +43,7 @@ export const POST: APIRoute = async ({ request }) => {
     } else {
       const formData = await request.formData();
       body = {
+        name: formData.get('name'),
         email: formData.get('email'),
         phone: formData.get('phone') || undefined,
         intent: formData.get('intent'),
@@ -65,7 +71,7 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    const { email, phone, intent } = validationResult.data;
+    const { name, email, phone, intent } = validationResult.data;
 
     // 2. Client Metadata & IP Hashing (for privacy-compliant rate tracking)
     const userAgent = request.headers.get('user-agent') || 'unknown';
@@ -77,6 +83,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     // 4. Persist to Supabase / Storage
     const dbResult = await saveResumeRequest({
+      name,
       email,
       phone: phone || null,
       intent_raw: intent,
@@ -95,6 +102,7 @@ export const POST: APIRoute = async ({ request }) => {
     let emailSent = false;
     if (intentAnalysis.category !== 'Spam') {
       const emailResult = await sendResumeEmail({
+        toName: name,
         toEmail: email,
         intentCategory: intentAnalysis.category,
         pdfBuffer: resumeAsset.buffer,
@@ -102,8 +110,9 @@ export const POST: APIRoute = async ({ request }) => {
       });
       emailSent = emailResult.success;
 
-      // Also trigger admin notification to your email in background
+      // Also trigger admin notification to your personal email in background
       sendLeadNotificationEmail({
+        name,
         email,
         phone: phone || undefined,
         intent,
