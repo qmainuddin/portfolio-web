@@ -3,7 +3,7 @@ import { z } from 'zod';
 import crypto from 'node:crypto';
 import { analyzeIntent } from '@/lib/ai-intent';
 import { saveResumeRequest, getResumePdfBuffer } from '@/lib/supabase';
-import { sendResumeEmail } from '@/lib/email';
+import { sendResumeEmail, sendLeadNotificationEmail } from '@/lib/email';
 
 export const prerender = false;
 
@@ -101,6 +101,16 @@ export const POST: APIRoute = async ({ request }) => {
         pdfFilename: resumeAsset.filename,
       });
       emailSent = emailResult.success;
+
+      // Also trigger admin notification to your email in background
+      sendLeadNotificationEmail({
+        email,
+        phone: phone || undefined,
+        intent,
+        category: intentAnalysis.category,
+        score: intentAnalysis.score,
+        summary: intentAnalysis.summary,
+      }).catch(e => console.warn('[Admin Notify Warning]', e));
     }
 
     return new Response(
