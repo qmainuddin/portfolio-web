@@ -203,9 +203,12 @@ export async function sendResumeEmail(
     const resend = new Resend(apiKey);
     const html = generateResumeEmailHtml(params.intentCategory);
 
+    const replyTo = process.env.RESEND_NOTIFY_EMAIL || process.env.RESEND_REPLY_TO;
+
     const data = await resend.emails.send({
       from: fromEmail,
       to: [params.toEmail],
+      replyTo: replyTo ? [replyTo] : undefined,
       subject: 'Mainuddin Talukdar — Resume & Technical Overview',
       html,
       attachments: [
