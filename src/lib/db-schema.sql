@@ -8,6 +8,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- 2. Create resume_requests table
 CREATE TABLE IF NOT EXISTS public.resume_requests (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT,
   email TEXT NOT NULL,
   phone TEXT,
   intent_raw TEXT NOT NULL,
