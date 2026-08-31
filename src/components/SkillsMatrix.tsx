@@ -3,7 +3,7 @@ import { Search } from 'lucide-react';
 
 interface SkillItem {
   id: string;
-  category: 'ai' | 'fullstack' | 'python' | 'cloud' | 'leadership';
+  category: 'ai' | 'backend' | 'fullstack' | 'cloud' | 'leadership';
   title: string;
   recency: string;
   summary: string;
@@ -21,31 +21,40 @@ const skillsData: SkillItem[] = [
     keywords: ['Claude Code', 'Cursor', 'Codex', 'Agent Architectures', 'Tool Calling', 'RAG', 'Prompt Strategies', 'LLM Benchmarking'],
   },
   {
+    id: 'backend-java-python',
+    category: 'backend',
+    title: 'Backend Engineering (Java → Python)',
+    recency: '9 Years Core Production',
+    summary:
+      'Nine years in Java and Spring Boot — REST APIs, microservices, OOP and design patterns, SQL (PostgreSQL, Oracle) and NoSQL — with the exact same distributed-systems fundamentals now applied in Python for services, data pipelines, ML, and automation. Java experience transfers to Python directly.',
+    keywords: ['Java 11/17/21', 'Spring Boot', 'Python', 'Microservices', 'REST APIs', 'Redis Caching', 'PostgreSQL / Oracle', 'Kafka', 'Distributed Systems'],
+  },
+  {
     id: 'fullstack-web',
     category: 'fullstack',
     title: 'Full-Stack Web & Mobile Ecosystems',
     recency: '9 Years Production',
     summary:
-      'TypeScript/JavaScript, Next.js, React, React Native (shipped iOS & Android apps), Node.js, Astro, REST API design, Supabase, PostgreSQL, and Vercel deployment with accessible functional component design.',
-    keywords: ['TypeScript', 'Next.js', 'React', 'React Native', 'Astro', 'Node.js', 'REST APIs', 'Supabase / Postgres'],
+      'TypeScript/JavaScript, Next.js, React, React Native (shipped iOS & Android apps to App Store/Play Store), Node.js, Astro, REST API design, Supabase, PostgreSQL, and Vercel deployment with accessible functional component design.',
+    keywords: ['TypeScript', 'Next.js', 'React', 'React Native (iOS/Android)', 'Astro', 'Node.js', 'REST APIs', 'Supabase / Postgres'],
   },
   {
-    id: 'python-ml',
-    category: 'python',
+    id: 'python-data-ml',
+    category: 'backend',
     title: 'Python, Data Pipelines & Applied ML',
-    recency: 'Active & Master of AI',
+    recency: 'Master of AI (Level 9)',
     summary:
-      'Python for scripting, automated microservices, ETL data pipelines, machine learning, and deep learning. NumPy, Pandas, PyTorch workflows, and Spark/Hadoop processing over multi-terabyte datasets.',
+      'Python for autonomous agent services, ETL data pipelines, machine learning, and deep learning. NumPy, Pandas, PyTorch workflows, and Spark/Hadoop processing over multi-terabyte datasets, backed by deep CS and enterprise architecture foundations.',
     keywords: ['Python', 'NumPy / Pandas', 'PyTorch', 'SparkSQL', 'Hadoop', 'Data Pipelines', 'Meta-Learning ML', 'Deep Learning'],
   },
   {
     id: 'cloud-devops',
     category: 'cloud',
-    title: 'Cloud Infrastructure, Docker & CI/CD',
+    title: 'Cloud Infrastructure, AWS & CI/CD',
     recency: '9 Years Production',
     summary:
-      'AWS (Lambda, DynamoDB, S3, NoSQL), Docker containerization, Redis caching layers (cutting read latency >80%), GitHub Actions CI/CD pipelines, Caddy reverse proxy, and analytics telemetry dashboards.',
-    keywords: ['AWS Lambda / S3', 'Docker', 'Redis Caching', 'CI/CD Pipelines', 'GitHub Actions', 'Caddy Reverse Proxy', 'Kafka', 'TDD / Vitest'],
+      'AWS (Lambda, DynamoDB, S3, NoSQL), Docker containerization, Redis caching layers (cutting read latency >80%), GitHub Actions CI/CD pipelines, Caddy reverse proxy, and operational telemetry dashboards.',
+    keywords: ['AWS (Lambda, S3, DynamoDB)', 'Docker', 'Redis Caching', 'CI/CD Pipelines', 'GitHub Actions', 'Caddy Reverse Proxy', 'Kafka', 'TDD / Vitest'],
   },
   {
     id: 'ways-of-working',
@@ -53,13 +62,13 @@ const skillsData: SkillItem[] = [
     title: 'Ways of Working & Client Collaboration',
     recency: 'Continuous Practice',
     summary:
-      'Self-directed, end-to-end ownership of features from whiteboard to deployment. Cross-functional leadership, client-facing communication, technical trade-off analysis, and mentoring junior engineers.',
+      'Self-directed, end-to-end ownership of features from whiteboard to deployment. Cross-functional leadership, client-facing communication, technical trade-off analysis, and clear written and verbal collaboration.',
     keywords: ['End-to-End Ownership', 'Client-Facing Delivery', 'Technical Leadership', 'Trade-Off Analysis', 'Agile / Jira', 'Code Reviews'],
   },
 ];
 
 export default function SkillsMatrix() {
-  const [activeFilter, setActiveFilter] = useState<'all' | 'ai' | 'fullstack' | 'python' | 'cloud' | 'leadership'>('all');
+  const [activeFilter, setActiveFilter] = useState<'all' | 'ai' | 'backend' | 'fullstack' | 'cloud' | 'leadership'>('all');
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredSkills = useMemo(() => {
@@ -78,8 +87,8 @@ export default function SkillsMatrix() {
   const categories = [
     { id: 'all', label: 'All Disciplines' },
     { id: 'ai', label: 'AI Agents & LLMs' },
+    { id: 'backend', label: 'Backend (Java → Python)' },
     { id: 'fullstack', label: 'Full-Stack Web & Mobile' },
-    { id: 'python', label: 'Python & ML' },
     { id: 'cloud', label: 'Cloud & Delivery' },
     { id: 'leadership', label: 'Ways of Working' },
   ];
