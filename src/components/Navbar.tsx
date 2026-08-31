@@ -105,9 +105,9 @@ export default function Navbar() {
         {/* Brand Logo */}
         <a
           href="#hero"
-          className="flex items-center gap-2.5 group focus:outline-none focus:ring-2 focus:ring-[#52b788] rounded-2xl p-1"
+          className="flex items-center gap-2.5 group focus:outline-none focus:ring-2 focus:ring-emerald-500 rounded-xl p-1"
         >
-          <span className="flex h-9 w-9 items-center justify-center rounded-2xl bg-[#1e382b] text-white font-sans font-extrabold text-sm shadow-md group-hover:scale-105 transition-transform tracking-tight">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-[#1e382b] to-[#2d6a4f] dark:from-[#2d6a4f] dark:to-[#52b788] text-[#f4f7f4] font-mono font-bold text-sm shadow-sm group-hover:scale-105 transition-transform">
             MT
           </span>
           <div className="flex flex-col">
