@@ -1,10 +1,10 @@
 # ==============================================================================
 # Multi-Stage Production Dockerfile for Portfolio & Lead Capture Platform
-# Target Platform: Node.js 20 on Alpine Linux (Minimal Attack Surface)
+# Target Platform: Node.js 22 on Alpine Linux (Minimal Attack Surface)
 # ==============================================================================
 
 # --- Stage 1: Dependency & Build Base ---
-FROM node:20-alpine AS builder
+FROM node:22-alpine AS builder
 
 WORKDIR /app
 
@@ -28,7 +28,7 @@ RUN npm run build
 RUN npm prune --production
 
 # --- Stage 2: Production Runtime ---
-FROM node:20-alpine AS runner
+FROM node:22-alpine AS runner
 
 WORKDIR /app
 

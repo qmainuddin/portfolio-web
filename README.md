@@ -116,7 +116,7 @@ The **Portfolio & Lead Capture Platform** is engineered to deliver sub-second pe
 ## 🚀 Getting Started
 
 ### Prerequisites
-- **Node.js**: v20.x or later
+- **Node.js**: v22.x or later
 - **npm**: v10.x or later
 - **Docker & Docker Compose** (Optional for container testing)
 
