@@ -87,4 +87,88 @@ describe('Resume Request Schema Validation', () => {
       expect(result.error.issues[0].message).toContain('valid phone number');
     }
   });
+
+  it('accepts various valid international telephone formats', () => {
+    const validPhones = [
+      '+1 (555) 019-2834',
+      '+44 20 7946 0919',
+      '021 123 4567',
+      '+64-21-555-0199',
+      '0800 83 83 83',
+    ];
+
+    for (const phone of validPhones) {
+      const result = resumeRequestSchema.safeParse({
+        name: 'Jane Doe',
+        email: 'jane@example.com',
+        phone,
+        intent: 'Interested in reviewing your engineering background.',
+      });
+      expect(result.success).toBe(true);
+    }
+  });
+
+  it('accepts names with international characters and hyphens', () => {
+    const internationalNames = [
+      'François Müller',
+      'José Gómez',
+      'René-Jean Martin',
+      'Søren Kierkegaard',
+    ];
+
+    for (const name of internationalNames) {
+      const result = resumeRequestSchema.safeParse({
+        name,
+        email: 'user@example.com',
+        intent: 'Looking to hire for a senior software engineering role.',
+      });
+      expect(result.success).toBe(true);
+    }
+  });
+
+  it('rejects an intent that exceeds 1000 characters', () => {
+    const longIntent = 'a'.repeat(1001);
+    const result = resumeRequestSchema.safeParse({
+      name: 'Alex Thompson',
+      email: 'alex@example.com',
+      intent: longIntent,
+    });
+
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.issues[0].message).toContain('1000 characters');
+    }
+  });
+
+  it('rejects intent with whitespace-only or trimmed length < 5', () => {
+    const whitespaceIntent = '    ab    ';
+    const result = resumeRequestSchema.safeParse({
+      name: 'Alex Thompson',
+      email: 'alex@example.com',
+      intent: whitespaceIntent,
+    });
+
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.issues[0].message).toContain('minimum 5 characters');
+    }
+  });
+
+  it('trims leading and trailing whitespace on name, email, and intent', () => {
+    const untrimmedData = {
+      name: '   Alex Thompson   ',
+      email: '   alex@techcorp.io   ',
+      phone: '   +64 21 000 0000   ',
+      intent: '   Inquiring about consulting services for an enterprise cloud project.   ',
+    };
+
+    const result = resumeRequestSchema.safeParse(untrimmedData);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.name).toBe('Alex Thompson');
+      expect(result.data.email).toBe('alex@techcorp.io');
+      expect(result.data.phone).toBe('+64 21 000 0000');
+      expect(result.data.intent).toBe('Inquiring about consulting services for an enterprise cloud project.');
+    }
+  });
 });

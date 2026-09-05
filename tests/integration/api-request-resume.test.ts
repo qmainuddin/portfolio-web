@@ -86,4 +86,75 @@ describe('API Integration: POST /api/request-resume', () => {
     expect(mockResumeRequests.length).toBe(1);
     expect(mockResumeRequests[0].status).toBe('flagged');
   });
+
+  it('handles multipart/form-data (FormData) submission successfully', async () => {
+    const formData = new FormData();
+    formData.append('name', 'Marcus Vance');
+    formData.append('email', 'marcus@vancemedia.co');
+    formData.append('intent', 'Looking for architectural advice on building an agentic platform.');
+
+    const mockRequest = new Request('http://localhost:4321/api/request-resume', {
+      method: 'POST',
+      headers: {
+        'User-Agent': 'Vitest-Browser-Agent',
+        'X-Real-IP': '203.0.113.195',
+      },
+      body: formData,
+    });
+
+    const response = await POST({ request: mockRequest } as any);
+    expect(response.status).toBe(200);
+
+    const json = await response.json();
+    expect(json.success).toBe(true);
+    expect(json.data.category).toBeDefined();
+
+    expect(mockResumeRequests.length).toBe(1);
+    expect(mockResumeRequests[0].name).toBe('Marcus Vance');
+    expect(mockResumeRequests[0].email).toBe('marcus@vancemedia.co');
+    expect(mockResumeRequests[0].ip_hash).toBeDefined();
+  });
+
+  it('returns 400 Bad Request when phone number format is invalid', async () => {
+    const payload = {
+      name: 'Test User',
+      email: 'test@example.com',
+      phone: 'not-a-phone-number-12345-abcde',
+      intent: 'Inquiring about full stack development services.',
+    };
+
+    const mockRequest = new Request('http://localhost:4321/api/request-resume', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    const response = await POST({ request: mockRequest } as any);
+    expect(response.status).toBe(400);
+
+    const json = await response.json();
+    expect(json.success).toBe(false);
+    expect(json.details.some((d: any) => d.field === 'phone')).toBe(true);
+  });
+
+  it('returns 400 Bad Request when intent explanation is too short', async () => {
+    const payload = {
+      name: 'Test User',
+      email: 'test@example.com',
+      intent: 'hi',
+    };
+
+    const mockRequest = new Request('http://localhost:4321/api/request-resume', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    const response = await POST({ request: mockRequest } as any);
+    expect(response.status).toBe(400);
+
+    const json = await response.json();
+    expect(json.success).toBe(false);
+    expect(json.details.some((d: any) => d.field === 'intent')).toBe(true);
+  });
 });

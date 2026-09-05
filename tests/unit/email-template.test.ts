@@ -44,4 +44,33 @@ describe('Email Template Generator & Delivery', () => {
     expect(result.success).toBe(true);
     expect(result.messageId).toBeDefined();
   });
+
+  it('falls back to "Hello," when name is omitted or whitespace', () => {
+    const htmlNoName = generateResumeEmailHtml('Recruiter');
+    expect(htmlNoName).toContain('Hello,');
+
+    const htmlWhitespaceName = generateResumeEmailHtml('Client', '   ');
+    expect(htmlWhitespaceName).toContain('Hello,');
+  });
+
+  it('falls back to default intro text when category is unrecognized', () => {
+    const html = generateResumeEmailHtml('UnknownCategory' as any, 'Alex');
+    expect(html).toContain('Thank you for requesting my resume.');
+  });
+
+  it('simulates sendLeadNotificationEmail successfully in mock mode', async () => {
+    const { sendLeadNotificationEmail } = await import('@/lib/email');
+    const result = await sendLeadNotificationEmail({
+      name: 'Jessica Pearson',
+      email: 'recruiter@pearson.com',
+      phone: '+1 212 555 0199',
+      intent: 'Hiring a Principal Cloud Architect',
+      category: 'Recruiter',
+      score: 0.95,
+      summary: 'Verified senior hiring inquiry',
+    });
+
+    expect(result.success).toBe(true);
+    expect(result.messageId).toBeDefined();
+  });
 });

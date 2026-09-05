@@ -22,12 +22,21 @@ export function classifyIntentHeuristic(intentRaw: string): IntentAnalysisResult
     };
   }
 
+  const hasWord = (keywords: string[]) => {
+    return keywords.some(k => {
+      // Escape regex special chars
+      const escaped = k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(`\\b${escaped}\\b`, 'i');
+      return regex.test(text);
+    });
+  };
+
   // Client / Business project keywords (checked before broad titles)
   const clientKeywords = [
     'client', 'consulting', 'consultant', 'freelance', 'contract work', 'build an app', 'build our',
     'quotation', 'budget', 'mvp', 'agency', 'partnership', 'estimate', 'services', 'saas', 'startup', 'commission',
   ];
-  if (clientKeywords.some(k => text.includes(k))) {
+  if (hasWord(clientKeywords)) {
     return {
       category: 'Client',
       score: 0.88,
@@ -35,30 +44,30 @@ export function classifyIntentHeuristic(intentRaw: string): IntentAnalysisResult
     };
   }
 
-  // Recruiter keywords
-  const recruiterKeywords = [
-    'hire', 'hiring', 'recruiter', 'recruiting', 'job', 'position', 'open role', 'salary', 'interview',
-    'headhunter', 'talent acquisition', 'staffing', 'resume', 'cv', 'opportunity', 'full-time',
-    'rate', 'lead developer', 'engineer position', 'salary expectations', 'open to new',
-  ];
-  if (recruiterKeywords.some(k => text.includes(k))) {
-    return {
-      category: 'Recruiter',
-      score: 0.92,
-      summary: 'Hiring manager or talent recruiter seeking candidate credentials.',
-    };
-  }
-
-  // Engineering Peer keywords
+  // Engineering Peer keywords (checked before recruiter to prioritize technical/agent discussion)
   const peerKeywords = [
-    'peer', 'engineer', 'collaboration', 'open source', 'ai agents', 'architecture',
-    'antigravity', 'claude', 'langchain', 'tech stack', 'connect', 'networking', 'fellow', 'developer',
+    'peer', 'collaboration', 'open source', 'ai agents', 'agent', 'architecture', 'ast',
+    'antigravity', 'claude', 'langchain', 'tech stack', 'connect', 'networking', 'fellow', 'prompt caching',
   ];
-  if (peerKeywords.some(k => text.includes(k))) {
+  if (hasWord(peerKeywords)) {
     return {
       category: 'Engineering Peer',
       score: 0.85,
       summary: 'Engineering peer or researcher connecting on technical topics.',
+    };
+  }
+
+  // Recruiter keywords
+  const recruiterKeywords = [
+    'hire', 'hiring', 'recruiter', 'recruiting', 'job', 'position', 'open role', 'salary', 'interview',
+    'headhunter', 'talent acquisition', 'staffing', 'resume', 'cv', 'opportunity', 'full-time',
+    'hourly rate', 'day rate', 'lead developer', 'engineer position', 'salary expectations', 'open to new',
+  ];
+  if (hasWord(recruiterKeywords)) {
+    return {
+      category: 'Recruiter',
+      score: 0.92,
+      summary: 'Hiring manager or talent recruiter seeking candidate credentials.',
     };
   }
 
