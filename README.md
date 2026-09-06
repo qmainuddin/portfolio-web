@@ -151,7 +151,7 @@ The **Portfolio & Lead Capture Platform** is engineered to deliver sub-second pe
 
 ## 🧪 Testing & Quality Assurance
 
-All critical endpoints, schemas, email templates, and intent classifiers are backed by automated tests via [Vitest](https://vitest.dev/):
+All critical endpoints, schemas, email templates, intent classifiers, and database handlers are backed by **39 automated tests across 6 test suites** via [Vitest](https://vitest.dev/):
 
 ```bash
 # Run full automated test suite
@@ -166,6 +166,46 @@ make test-coverage
 # Run TypeScript and linter checks
 make lint
 ```
+
+### 📋 Test Suites Breakdown
+
+| Test Suite | Test Count | Scope & Covered Scenarios |
+|---|:---:|---|
+| **[`tests/unit/validation.test.ts`](tests/unit/validation.test.ts)** | 11 tests | • Valid full payload parsing (`name`, `email`, `phone`, `intent`)<br>• Optional phone omission handling<br>• Empty / missing name rejection<br>• Invalid email syntax rejection<br>• Intent length constraints (minimum 5 chars, maximum 1000 chars)<br>• International phone formatting (`+1 (555) 019-2834`, `021 123 4567`, `+44 20 7946 0919`) and invalid phone rejection<br>• International name character support (`François Müller`, `José Gómez`, `René-Jean Martin`)<br>• Automatic whitespace sanitization and trimming across all fields |
+| **[`tests/unit/ai-intent.test.ts`](tests/unit/ai-intent.test.ts)** | 12 tests | • Recruiter & hiring intent detection (talent acquisition, headhunters, open positions)<br>• Client & consulting intent detection (quotations, budget, MVP commissions, SaaS)<br>• Engineering peer detection (AST agents, architecture, prompt caching, open-source)<br>• Spam & scam detection (`crypto`, `viagra`, `free money`, `casino`, `lottery`, shortened URLs like `bit.ly`, `http://`, `https://`)<br>• Word-boundary regex matching preventing false positives (e.g. `rate` inside `strategy`)<br>• Whitespace-only input handling<br>• Empty input resilience<br>• Case-insensitivity validation (e.g., ALL CAPS inquiries) |
+| **[`tests/unit/email-template.test.ts`](tests/unit/email-template.test.ts)** | 7 tests | • Recruiter email personalization and branding<br>• Client consulting email personalization<br>• Engineering peer email personalization<br>• Fallback greeting (`"Hello,"`) when name is omitted or whitespace<br>• Fallback intro text for unrecognized intent categories<br>• Simulated transactional resume email dispatch via Resend in mock mode<br>• Simulated admin lead notification email dispatch (`sendLeadNotificationEmail`) in mock mode |
+| **[`tests/unit/supabase.test.ts`](tests/unit/supabase.test.ts)** | 2 tests | • Offline / development fallback storage persistence in `mockResumeRequests`<br>• Data integrity verification for all record columns (`name`, `email`, `phone`, `intent_raw`, `intent_category`, `intent_score`, `user_agent`, `ip_hash`, `status`)<br>• Resume PDF binary buffer retrieval and valid filename check |
+| **[`tests/integration/api-health.test.ts`](tests/integration/api-health.test.ts)** | 1 test | • Health check endpoint (`GET /api/health`) returning HTTP 200, uptime, version, and memory usage for Docker / Caddy monitoring |
+| **[`tests/integration/api-request-resume.test.ts`](tests/integration/api-request-resume.test.ts)** | 6 tests | • End-to-end JSON request processing, intent classification, DB persistence, and email dispatch<br>• Multi-part `FormData` (`application/x-www-form-urlencoded`) payload handling<br>• HTTP 400 rejection for missing email, invalid phone format, and short intent<br>• Spam submission flagging (stores record with `status: 'flagged'` without dispatching emails)<br>• Client metadata extraction (`X-Real-IP`, `X-Forwarded-For`, `User-Agent`) and IP hashing |
+
+---
+
+## 🗺️ Phase 2 Expansion & Feature Roadmap
+
+The platform architecture is designed to be modular and extensible. The following initiatives are scheduled for Phase 2 implementation:
+
+### 1. 📊 Authenticated Lead Management & Telemetry Dashboard (`/admin`)
+- **Supabase Auth Integration**: Secure role-based admin login with multi-factor authentication (MFA).
+- **Interactive Kanban & Table View**: Filter, search, and update lead status (`new` &rarr; `contacted` &rarr; `interviewing` &rarr; `closed`).
+- **Real-Time Telemetry & Insights**: Visual charts showing weekly lead volume, conversion by category (`Recruiter` vs. `Client`), and geographical IP distribution.
+
+### 2. 📝 Subdomain Blog Platform (`blog.mainuddintalukdar.cloud`)
+- **MDX & Content Collections**: Full-featured technical blogging engine with syntax highlighting, LaTeX math support, reading time estimates, and SEO tags.
+- **Deep-Dive Technical Articles**: Dedicated series on deterministic Agentic AI, token optimization, and cost-governed distributed architectures.
+- **Shared Design Tokens**: Unified navbar, footer, and theme state across the main domain and blog subdomain.
+
+### 3. 🧪 Interactive Architecture Labs & Live Demos
+- **Live AI Agent Sandbox**: An interactive browser widget demonstrating real-time AST context slicing, prompt caching latency graphs, and token cost calculators.
+- **Embedded App Previews**: Interactive interactive demo canvases for `TradiePulse` and `MathQuest`.
+
+### 4. 🛡️ Advanced Security, Rate Limiting & Webhook Alerts
+- **Distributed Redis Rate Limiting**: Integration with Upstash Redis to enforce strict sliding-window request limits on `/api/request-resume` (e.g. 5 requests/IP/hour).
+- **Instant Webhook Notifications**: Real-time dispatch of high-priority leads to private Slack / Discord channels or Telegram bot alerts.
+- **Optional Turnstile Verification**: Seamless Cloudflare Turnstile bot challenge for high-risk IP footprints.
+
+### 5. 📄 Dynamic Resume Customization & Analytics
+- **Tailored Resume Generator**: Dynamically highlight relevant technical experience based on verified intent category (e.g., emphasis on Cloud/DevOps for infrastructure leads vs. AI Agents for LLM research leads).
+- **Resume Download Analytics**: Granular telemetry on PDF downloads, link click-throughs, and email delivery receipts.
 
 ---
 
