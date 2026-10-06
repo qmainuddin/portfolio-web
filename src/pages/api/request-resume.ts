@@ -129,7 +129,7 @@ export const POST: APIRoute = async ({ request }) => {
         data: {
           requestId: dbResult.id,
           category: intentAnalysis.category,
-          downloadUrl: '/assets/resume-sample.pdf',
+          downloadUrl: '/assets/Mainuddin_Talukdar_Resume.pdf',
           emailDelivered: emailSent,
         },
       }),

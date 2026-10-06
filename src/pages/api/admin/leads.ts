@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { verifyAdminSession } from '@/lib/auth';
-import { getSupabaseClient, mockResumeRequests } from '@/lib/supabase';
+import { getSupabaseClient, readLocalLeads, mockResumeRequests } from '@/lib/supabase';
 
 export const prerender = false;
 
@@ -15,24 +15,36 @@ export const GET: APIRoute = async ({ request }) => {
 
   try {
     const supabase = getSupabaseClient();
+    let cloudLeads: any[] = [];
     if (supabase) {
-      const { data, error } = await supabase
-        .from('resume_requests')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(100);
+      try {
+        const { data, error } = await supabase
+          .from('resume_requests')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(100);
 
-      if (!error && data) {
-        return new Response(
-          JSON.stringify({ success: true, leads: data }),
-          { status: 200, headers: { 'Content-Type': 'application/json' } }
-        );
+        if (!error && data && data.length > 0) {
+          cloudLeads = data;
+        }
+      } catch (err) {
+        console.warn('[Admin Leads] Supabase query error:', err);
       }
     }
 
-    // Fallback to in-memory mock leads
+    if (cloudLeads.length > 0) {
+      return new Response(
+        JSON.stringify({ success: true, leads: cloudLeads, source: 'supabase' }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Fallback to persistent local JSON and memory store
+    const localLeads = readLocalLeads();
+    const leadsList = localLeads.length > 0 ? localLeads : [...mockResumeRequests];
+
     return new Response(
-      JSON.stringify({ success: true, leads: [...mockResumeRequests].reverse() }),
+      JSON.stringify({ success: true, leads: [...leadsList].reverse(), source: 'local' }),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
   } catch (err: any) {

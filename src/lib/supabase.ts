@@ -46,25 +46,61 @@ export function getSupabaseClient(): SupabaseClient | null {
   return supabaseClientInstance;
 }
 
+function getLocalLeadsFilePath(): string {
+  const dataDir = path.resolve(process.cwd(), 'data');
+  if (!fs.existsSync(dataDir)) {
+    try {
+      fs.mkdirSync(dataDir, { recursive: true });
+    } catch {}
+  }
+  return path.join(dataDir, 'leads.json');
+}
+
+export function readLocalLeads(): ResumeRequestRecord[] {
+  try {
+    const filePath = getLocalLeadsFilePath();
+    if (fs.existsSync(filePath)) {
+      const content = fs.readFileSync(filePath, 'utf-8');
+      return JSON.parse(content);
+    }
+  } catch (err) {
+    console.warn('[Local Storage] Failed to read leads.json:', err);
+  }
+  return [];
+}
+
+export function saveLocalLead(record: ResumeRequestRecord): void {
+  try {
+    const filePath = getLocalLeadsFilePath();
+    const existing = readLocalLeads();
+    existing.push(record);
+    fs.writeFileSync(filePath, JSON.stringify(existing, null, 2), 'utf-8');
+  } catch (err) {
+    console.warn('[Local Storage] Failed to write leads.json:', err);
+  }
+}
+
 /**
- * Persists a new resume request into Supabase or fallback mock storage.
+ * Persists a new resume request into Supabase with persistent local storage backup.
  */
 export async function saveResumeRequest(
   record: ResumeRequestRecord
-): Promise<{ success: boolean; id: string; error?: string }> {
-  const client = getSupabaseClient();
+): Promise<{ success: boolean; id: string; error?: string; storage?: 'supabase' | 'local' }> {
+  const fallbackId = `mock-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
+  const fullRecord: ResumeRequestRecord = {
+    ...record,
+    id: fallbackId,
+    created_at: new Date().toISOString(),
+    status: record.status || 'sent',
+  };
 
+  // Always save locally to guarantee zero lead loss
+  mockResumeRequests.push(fullRecord);
+  saveLocalLead(fullRecord);
+
+  const client = getSupabaseClient();
   if (!client) {
-    // Graceful fallback for local development or testing
-    const fallbackId = `mock-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
-    const savedRecord: ResumeRequestRecord = {
-      ...record,
-      id: fallbackId,
-      created_at: new Date().toISOString(),
-      status: record.status || 'sent',
-    };
-    mockResumeRequests.push(savedRecord);
-    return { success: true, id: fallbackId };
+    return { success: true, id: fallbackId, storage: 'local' };
   }
 
   try {
@@ -93,14 +129,15 @@ export async function saveResumeRequest(
     }
 
     if (insertRes.error) {
-      console.error('[Supabase Error] Failed to insert resume request:', insertRes.error.message);
-      return { success: false, id: '', error: insertRes.error.message };
+      console.warn('[Supabase Warning] Could not insert into Supabase table, saved locally:', insertRes.error.message);
+      return { success: true, id: fallbackId, storage: 'local', error: insertRes.error.message };
     }
 
-    return { success: true, id: insertRes.data?.id || 'saved' };
+    const dbId = insertRes.data?.id || fallbackId;
+    return { success: true, id: dbId, storage: 'supabase' };
   } catch (err: any) {
-    console.error('[Supabase Exception]', err);
-    return { success: false, id: '', error: err.message || 'Database error' };
+    console.warn('[Supabase Exception] Failed to save in Supabase, saved locally:', err);
+    return { success: true, id: fallbackId, storage: 'local', error: err.message || 'Database error' };
   }
 }
 
