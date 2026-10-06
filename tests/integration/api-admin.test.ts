@@ -1,4 +1,6 @@
 import { describe, it, expect } from 'vitest';
+import fs from 'node:fs';
+import path from 'node:path';
 import { POST as loginPost } from '@/pages/api/admin/login';
 import { POST as logoutPost } from '@/pages/api/admin/logout';
 import { GET as sessionGet } from '@/pages/api/admin/session';
@@ -89,8 +91,9 @@ describe('Admin API Endpoints Integration', () => {
 
   it('successfully uploads and replaces resume via POST /api/admin/upload-resume', async () => {
     const token = createSessionToken('qmain');
-    const validPdfContent = '%PDF-1.4\n1 0 obj\n<< /Type /Catalog >>\nendobj\ntrailer\n<< /Root 1 0 R >>\n%%EOF';
-    const base64Pdf = Buffer.from(validPdfContent).toString('base64');
+    const resumePath = path.resolve(process.cwd(), 'public/assets/Mainuddin_Talukdar_Resume.pdf');
+    const originalPdf = fs.existsSync(resumePath) ? fs.readFileSync(resumePath) : Buffer.from('%PDF-1.4\n%Official-Resume');
+    const base64Pdf = originalPdf.toString('base64');
 
     const mockRequest = new Request('http://localhost:4321/api/admin/upload-resume', {
       method: 'POST',
