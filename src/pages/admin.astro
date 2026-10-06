@@ -1,0 +1,15 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import AdminPortal from '@/components/AdminPortal';
+
+export const prerender = false;
+---
+
+<Layout
+  title="Admin Console & Resume Publisher — Mainuddin Talukdar"
+  description="Private administrative portal for managing platform credentials, resume publication, and lead records."
+>
+  <main class="min-h-[85vh] bg-[#07090e] py-8">
+    <AdminPortal client:only="react" />
+  </main>
+</Layout>
