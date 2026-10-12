@@ -94,10 +94,10 @@ export default function SkillsMatrix() {
   ];
 
   return (
-    <section id="skills" className="py-20 bg-[#eef4f0]/60 dark:bg-[#0c1812]/50 border-b border-[#3b5446]/15 dark:border-[#52b788]/15">
+    <section id="skills" className="py-12 sm:py-16 bg-[#eef4f0]/60 dark:bg-[#0c1812]/50 border-b border-[#3b5446]/15 dark:border-[#52b788]/15">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-6 sm:mb-8">
           <div>
             <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#2d6a4f] dark:text-[#52b788]">
               Verified Technical Core

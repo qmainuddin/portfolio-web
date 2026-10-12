@@ -36,3 +36,7 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
+
+# Runtime data
+data/*.json
+!data/.gitkeep
