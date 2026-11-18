@@ -209,15 +209,32 @@ export default function AdminPortal() {
     setUploadSuccess(null);
 
     try {
-      const formData = new FormData();
-      formData.append('file', selectedFile);
+      const arrayBuffer = await selectedFile.arrayBuffer();
+      const bytes = new Uint8Array(arrayBuffer);
+      let binary = '';
+      for (let i = 0; i < bytes.byteLength; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      const fileBase64 = window.btoa(binary);
 
       const res = await fetch('/api/admin/upload-resume', {
         method: 'POST',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fileBase64,
+          filename: selectedFile.name,
+        }),
       });
 
-      const data = await res.json();
+      const text = await res.text();
+      let data: any = {};
+      try {
+        data = JSON.parse(text);
+      } catch {
+        data = { success: false, error: text || `Server returned HTTP ${res.status}` };
+      }
 
       if (!res.ok || !data.success) {
         setUploadError(data.error || 'Failed to upload resume.');
